@@ -1,0 +1,11 @@
+{
+  "id": "api-proxy",
+  "name": "API Client Proxy",
+  "pages": [
+    {
+      "group": "default",
+      "uri": "README.md"
+    }
+  ]
+}
+
