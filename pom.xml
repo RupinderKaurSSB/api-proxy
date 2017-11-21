@@ -1,0 +1,144 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.descoped</groupId>
+        <artifactId>parent</artifactId>
+        <version>5</version>
+    </parent>
+
+    <groupId>io.descoped.service</groupId>
+    <artifactId>api-proxy</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>api-proxy</name>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <module.build.sourceEncoding>UTF-8</module.build.sourceEncoding>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+
+        <descoped.logger.version>1.0.3</descoped.logger.version>
+        <kevinsawicki.http-request.version>6.0</kevinsawicki.http-request.version>
+        <hystrix.version>1.5.12</hystrix.version>
+        <jsoup.version>1.10.3</jsoup.version>
+        <assertj.version>3.8.0</assertj.version>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>oranheim</id>
+            <name>Ove Ranheim</name>
+            <email>oranheim@gmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <organization>Descoped</organization>
+            <organizationUrl>http://www.descoped.io/</organizationUrl>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <repository>
+            <id>descoped</id>
+            <name>Descoped Releases</name>
+            <url>https://repository.descoped.io/repository/descoped/</url>
+        </repository>
+        <snapshotRepository>
+            <id>descoped-snapshots</id>
+            <name>Descoped Snapshots</name>
+            <url>https://repository.descoped.io/repository/descoped-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <scm>
+        <url>http://www.descoped.io</url>
+        <connection>scm:git:git://github.com/descoped/api-proxy.git</connection>
+        <developerConnection>scm:git:git@github.com:descoped/api-proxy.git</developerConnection>
+    </scm>
+
+    <repositories>
+        <repository>
+            <id>descoped</id>
+            <name>Descoped Public Maven Repository Group</name>
+            <url>https://repository.descoped.io/repository/descoped/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>descoped-snapshots</id>
+            <name>Musific Public Maven Repository Group</name>
+            <url>https://repository.descoped.io/repository/descoped-snapshots/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.descoped</groupId>
+            <artifactId>descoped-logger</artifactId>
+            <version>${descoped.logger.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.kevinsawicki</groupId>
+            <artifactId>http-request</artifactId>
+            <version>${kevinsawicki.http-request.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.netflix.hystrix</groupId>
+            <artifactId>hystrix-core</artifactId>
+            <version>${hystrix.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.8.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20.1</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
