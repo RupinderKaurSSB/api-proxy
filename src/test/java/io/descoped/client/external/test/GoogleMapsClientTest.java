@@ -1,6 +1,6 @@
 package io.descoped.client.external.test;
 
-import com.github.kevinsawicki.http.HttpRequest;
+import io.descoped.client.external.google.GeoLocation;
 import io.descoped.client.external.google.GoogleMapsClient;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ public class GoogleMapsClientTest {
     @Test
     public void should_resolve_geo_location() throws Exception {
         GoogleMapsClient client = new GoogleMapsClient();
-        HttpRequest req = client.getGeoLocation("Oslo");
-        log.trace("{}", req.body());
+        GeoLocation geoLocation = client.getGeoLocation("Oslo");
+        log.trace("{}", geoLocation.toString());
     }
 }
