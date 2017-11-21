@@ -7,21 +7,23 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.zip.GZIPInputStream;
 
 /**
  * @author Ove Ranheim (oranheim@gmail.com)
  * @since 21/11/2017
  */
-public class BusinessEntityRegisterCentreClient {
+public class BusinessEntityRegisterClient {
 
-    private static final Logger log = LoggerFactory.getLogger(BusinessEntityRegisterCentreClient.class);
+    private static final Logger log = LoggerFactory.getLogger(BusinessEntityRegisterClient.class);
     private static String BRREG_SELSKAPSINFO_URL = "http://data.brreg.no/enhetsregisteret/download/enheter";
+    private static String SAFE_SPLIT_QUOTED_REGEXP = ";(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
     private String json;
     private int line;
     private String body;
 
-    public BusinessEntityRegisterCentreClient() {
+    public BusinessEntityRegisterClient() {
     }
 
     public static final List<String> FIELD_DEFS = getDatatypeList();
@@ -74,7 +76,7 @@ public class BusinessEntityRegisterCentreClient {
     }
 
     private String[] splitLine(String row) {
-        return row.split(";(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+        return row.split(SAFE_SPLIT_QUOTED_REGEXP);
     }
 
     private String convertToJson(String[] splitted) {
@@ -99,6 +101,7 @@ public class BusinessEntityRegisterCentreClient {
         buf.append("}");
         return buf.toString();
     }
+
     private String getOrganisationNumber(String[] splitted) {
         return splitted[0].replaceAll("\"", "");
     }
@@ -173,5 +176,17 @@ public class BusinessEntityRegisterCentreClient {
 
         return null;
     }
+
+    public void fetch() {
+
+    }
+
+    public void unpack() {
+    }
+
+    public void build(Consumer<?> callback) {
+    }
+
+
 
 }

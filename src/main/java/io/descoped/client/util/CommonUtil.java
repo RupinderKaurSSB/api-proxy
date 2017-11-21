@@ -136,6 +136,7 @@ public class CommonUtil {
         try {
             list = listClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
+            throw new IllegalStateException(e);
         }
         for (Object item : untypedList) {
             list.add((T) item);

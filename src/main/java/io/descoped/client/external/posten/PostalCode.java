@@ -25,7 +25,7 @@ public class PostalCode {
 
     // this fixes issues where a csv line container quote (") within quoted columns, e.g. "1"; "Foo should be "Bar" in FooBar"; "3"
     private static String[] splitLine(String row) {
-        return row.split(PostenPostalCodesClient.SAFE_SPLIT_QUOTED_REGEXP);
+        return row.split(PostenPostalCodesClient.SAFE_SPLIT_TABBED_REGEXP);
     }
 
 
