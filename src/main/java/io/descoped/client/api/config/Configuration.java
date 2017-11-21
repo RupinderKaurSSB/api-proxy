@@ -24,6 +24,10 @@ public class Configuration {
 
     private void loadConfiguration() {
         InputStream in = CommonUtil.tccl().getResourceAsStream("META-INF/security.properties");
+        if (in == null) {
+            log.error("Security config '{}' NOT found!", "META-INF/security.properties");
+            return;
+        }
         try (OutputStream out = CommonUtil.writeInputToOutputStream(in)) {
             log.trace("out: {}", out.toString());
             Scanner scanner = new Scanner(out.toString());
