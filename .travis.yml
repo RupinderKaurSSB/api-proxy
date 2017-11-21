@@ -2,13 +2,12 @@ language: java
 notifications:
   email: false
   slack:
-    secure: a7EUKRymx7w4rbyn3JecXvQUFuhbDyj+yKCG3YD5AorAqDmKYvj3Gh2obc1lJITTTBRQqRgyyJaLVYCrl2b/M53O0ddR0/ZcEMzXvj7Cl2YpNnXkJ4yX8VzI0EIQYXNaP6DWAoXVVnW9V9Gc23W0VIjAd2Y3S6/VKRhAnz4z84BdYqiqde1tXCnVtNueJ9Dq/aB0zcAdO37K9QbKJEXFICf+eYekg9bXtPAnNyr1sRR3qa5Dl+oAcUF/FNFCw+V7vNWfhFkEeoNPupcG3Uv5u9cOZcRlwsmOIYPUa6CFXHeHKv22g2l0PJ8swA+C9/TH6htA7JiOmbIO8IUwHLA5PYg+SBenclfbT8Yh5xuBCVBjFRlv8HJXpiqMjxT6n4AzHllLscc/8/TdsG4AAyXVIsCQlMDgfYM14DvvlAdCY0uBOUEWyDVrIBMzmOSdcxF+MNbaawULEBX5BllFaaKL7SX+haoXFsTisAGjGSuCxdESyB+bustq4X1ZSkqPDUygK8mBHzGe7cKsq000N/Et+u6wBpi0bvvEiwvMTomku3L+8O14Oo1bEs5tT6xf73nieTBSd3IwAtisHlmioDp+oM57V5aYl1LNnIvx+fPvtbsA8VmYITjN0w+YEm4UykWZuerHBm16rU9yIS21fXWasf4+ySAGO2kn5kvR3AJ1cb0=
+    secure: UYQVTqh0Y6FmNPhZna/8hcPsFA/NZ1t5Vc95eRuZxG+Q5cW7o0pXhAOzpNcJ7Blr7/YQdIWwTMEAPupY+Uri8SkbC6v1cy2KMiVmcOtRBhtRbaG+cXn4O0soZRdTd5L3SoOqXVuL0PBMtRMy74OYk2REcDUnxFcAWjSgDapcQsC+gCYVKAiz/QB9AvnmFSiG5N6MQ6tgRp2iApoxgMZPhInpLj/jtV79PX5LArHarTd/eT6XP23zYc/3rPHj8C21/oYDERdyd2lqwuoHQH7jtQXmLyWJ1IfyennwbRzQVirBLU7ShIkXQTN2prfPmy9/JkOQBAG6tLAdkHspGSvhY9AWTIuOJHGv8L32fIrJ2sSLTMrYqU1KXeHhxQQ2DBjacV7O4nIqZsjTS+sK9pFSE0B8LBOeQf6CoiVQwTeFhJfF7SjdvgJTiu2heLBX2AKnQIZBKjVV5/3LmIdj4R6r5EoHylinv9wc90MewLq5i+BQbvr57oOeka75WysR+TRlFHjZSkFV6jux4Sf4rqCOiow8sS129un24XmvollHQJCsIHmBKEAjCe3C8iWMEs10+zqhh/TL4IenMNnWk13Vq+zsJ2WjpEGEdfGXdS/akJLMx4JamCfoaMvl8Av93RxIMre6rDmqUkXa0Tu2jOVU60Vsb3BE+ZyD6t0v5vVNxWI=
 jdk:
 - oraclejdk8
 install: echo 'Run Maven Tests'
 script:
-- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar --settings
-  .travis/settings.xml -Dmaven.javadoc.skip=true -B -V
+- mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar --settings .travis/settings.xml -Dmaven.javadoc.skip=true -B -V
 after_success: mvn deploy --settings .travis/settings.xml -DskipTests -B -V
 branches:
   only:
