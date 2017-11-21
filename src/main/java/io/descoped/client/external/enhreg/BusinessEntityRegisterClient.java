@@ -1,6 +1,7 @@
 package io.descoped.client.external.enhreg;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import io.descoped.client.util.ConsoleProgress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,17 +17,18 @@ import java.util.zip.GZIPInputStream;
  */
 public class BusinessEntityRegisterClient {
 
+    public static final List<String> FIELD_DEFS = getDatatypeList();
     private static final Logger log = LoggerFactory.getLogger(BusinessEntityRegisterClient.class);
     private static String BRREG_SELSKAPSINFO_URL = "http://data.brreg.no/enhetsregisteret/download/enheter";
     private static String SAFE_SPLIT_QUOTED_REGEXP = ";(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
     private String json;
     private int line;
     private String body;
+    private File tempGZipFile;
+    private File tempFile;
 
     public BusinessEntityRegisterClient() {
     }
-
-    public static final List<String> FIELD_DEFS = getDatatypeList();
 
     private static List<String> getDatatypeList() {
         List<String> list = new ArrayList<>();
@@ -102,18 +104,33 @@ public class BusinessEntityRegisterClient {
         return buf.toString();
     }
 
-    private String getOrganisationNumber(String[] splitted) {
-        return splitted[0].replaceAll("\"", "");
+    public void fetch() throws IOException {
+        log.trace("Fetch: {}", BRREG_SELSKAPSINFO_URL);
+        HttpRequest req = HttpRequest.get(BRREG_SELSKAPSINFO_URL);
+        if (!req.ok()) throw new RuntimeException("Error fetching brreg selskapsdata");
+
+        tempGZipFile = File.createTempFile("brreg-selskaper", ".tmp.gz");
+        long contentLength = Long.valueOf(req.header("Content-Length"));
+        log.trace("Temp-file: {} -> Content-Length: {} bytes", tempGZipFile.getAbsolutePath(), contentLength);
+        Thread progressThread = ConsoleProgress.consoleProgressThread(tempGZipFile, contentLength);
+        try {
+            req.receive(tempGZipFile);
+        } finally {
+            ConsoleProgress.interruptProgress(progressThread);
+        }
     }
 
+    public void unpack() throws IOException {
+        if (!tempGZipFile.exists()) throw new RuntimeException("You must call download before you can unpack");
+        tempFile = File.createTempFile("brreg-selskaper", ".csv");
+        log.trace("Unpack to: {}", tempFile.getAbsolutePath());
 
-    public void gunzipIt(String inFile, String outFile) {
         byte[] buffer = new byte[1024];
         try {
             GZIPInputStream gzis;
-            try (FileInputStream fis = new FileInputStream(inFile)) {
+            try (FileInputStream fis = new FileInputStream(tempGZipFile)) {
                 gzis = new GZIPInputStream(fis);
-                try (FileOutputStream out = new FileOutputStream(outFile)) {
+                try (FileOutputStream out = new FileOutputStream(tempFile)) {
                     int len;
                     while ((len = gzis.read(buffer)) > 0) {
                         out.write(buffer, 0, len);
@@ -123,70 +140,36 @@ public class BusinessEntityRegisterClient {
                     out.close();
                 }
             }
-            System.out.println("GZip Done");
+            System.out.println("Done unpacking!");
 
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
-    protected String fetchEnhetsRegister() throws Exception {
-        boolean FETCH_NEW_DB = false;
-
-        if (FETCH_NEW_DB) {
-            log.trace("Fetch: {}", BRREG_SELSKAPSINFO_URL);
-            HttpRequest req = HttpRequest.get(BRREG_SELSKAPSINFO_URL);
-            if (!req.ok()) throw new RuntimeException("Error fetching brreg selskapsdata");
-            log.trace("Downloading..");
-//        String payload = req.body();
-            int code = req.code();
-
-            File file = File.createTempFile("brreg-selskaper", ".tmp.gz");
-            log.trace("File: {}", file.getAbsolutePath());
-            req.receive(file);
-
-            log.debug("Done download, now GUnZipping..");
-            gunzipIt(file.getAbsolutePath(), "/tmp/brreg-selskaper.csv");
-            log.debug("Done GUnZipping..");
-        }
-
+    public void build(Consumer<?> callback) throws IOException {
         json = null;
         line = 0;
 
+        BufferedReader br = new BufferedReader(new FileReader(tempFile.toString()));
         String rowLine;
-        try (BufferedReader br = new BufferedReader(new FileReader("/tmp/brreg-selskaper.csv"))) {
-            while ((rowLine = br.readLine()) != null) {
-                if (line == 0) {
-                    line++;
-                    continue;
-                }
-                if (line > 5) break;
-                String[] splitted = splitLine(rowLine);
-                json = convertToJson(splitted);
+        while ((rowLine = br.readLine()) != null) {
+            if (line == 0) {
+                line++;
+                continue;
+            }
+            String[] splitted = splitLine(rowLine);
+            json = convertToJson(splitted);
 //                log.trace("{}", json);
 
-                if (line % 100 == 0) log.trace("line: {}", line);
-                line++;
-            }
+            if (line % 100 == 0) log.trace("line: {}", line);
 
-        } catch (IOException e) {
-            log.error("line: {}, json: {}", line, json);
-            throw new RuntimeException(e);
+            if (line > 10000) break;
+
+            line++;
         }
 
-        return null;
-    }
-
-    public void fetch() {
 
     }
-
-    public void unpack() {
-    }
-
-    public void build(Consumer<?> callback) {
-    }
-
-
 
 }
