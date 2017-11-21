@@ -11,7 +11,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * Created by oranheim on 04/01/2017.
+ * @author Ove Ranheim (oranheim@gmail.com)
+ * @since 04/01/2017
  */
 public class CommonUtil {
 

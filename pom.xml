@@ -25,8 +25,9 @@
 
         <kevinsawicki.http-request.version>6.0</kevinsawicki.http-request.version>
         <hystrix.version>1.5.12</hystrix.version>
-        <jackson.version>2.9.1</jackson.version>
-        <jsoup.version>1.10.3</jsoup.version>
+        <jackson.version>2.9.2</jackson.version>
+        <jayway.jsonPath.version>2.4.0</jayway.jsonPath.version>
+        <jsoup.version>1.11.2</jsoup.version>
         <assertj.version>3.8.0</assertj.version>
     </properties>
 
@@ -110,6 +111,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.kevinsawicki</groupId>
+            <artifactId>http-request</artifactId>
+            <version>${kevinsawicki.http-request.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
@@ -130,7 +137,7 @@
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <version>2.0.0</version>
+            <version>${jayway.jsonPath.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>asm</groupId>
@@ -140,9 +147,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.kevinsawicki</groupId>
-            <artifactId>http-request</artifactId>
-            <version>${kevinsawicki.http-request.version}</version>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
 
         <dependency>
@@ -155,13 +162,6 @@
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>${jsoup.version}</version>
         </dependency>
 
         <dependency>

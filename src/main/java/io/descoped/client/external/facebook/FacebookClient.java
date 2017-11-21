@@ -1,8 +1,12 @@
-package io.descoped.client.api.facebook;
+package io.descoped.client.external.facebook;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import io.descoped.client.api.config.Configuration;
 
+/**
+ * @author Ove Ranheim (oranheim@gmail.com)
+ * @since 21/11/2017
+ */
 public class FacebookClient {
 
     private static final String API_VERSION = "v2.11";

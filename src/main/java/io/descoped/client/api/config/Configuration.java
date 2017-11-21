@@ -11,6 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * @author Ove Ranheim (oranheim@gmail.com)
+ * @since 21/11/2017
+ */
 public class Configuration {
 
     private static final Logger log = LoggerFactory.getLogger(Configuration.class);
@@ -29,12 +33,13 @@ public class Configuration {
             return;
         }
         try (OutputStream out = CommonUtil.writeInputToOutputStream(in)) {
-            log.trace("out: {}", out.toString());
             Scanner scanner = new Scanner(out.toString());
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                String[] split = line.split("=");
-                props.put(split[0], split[1]);
+                String key = line.substring(0, line.indexOf("="));
+                String value = line.substring(line.indexOf("=")+1);
+                //log.trace("{} => {}", key, value);
+                props.put(key, value);
             }
             scanner.close();
         } catch (IOException e) {
