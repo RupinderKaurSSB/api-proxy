@@ -66,4 +66,7 @@ public class Configuration {
         return instance().getProperty("facebook.developer.access_token", System.getenv().get("DEV_FACEBOOK_ACCESS_TOKEN"));
     }
 
+    public static String getGoogleApiKey() {
+        return instance().getProperty("google.api.key", System.getenv().get("DEV_GOOGLE_API_KEY"));
+    }
 }
