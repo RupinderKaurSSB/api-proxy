@@ -1,5 +1,6 @@
 package io.descoped.client.util;
 
+import io.descoped.client.exception.APIClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +36,7 @@ public class CommonUtil {
                 output.flush();
                 output.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new APIClientException(e);
             }
             super.remove();
         }
@@ -151,5 +152,11 @@ public class CommonUtil {
         }
         return contextClassLoader;
     }
+
+//    public static void prettyPrintJSON(JSONO payload) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+//        mapper.writeValue(System.out, payload);
+//    }
 
 }

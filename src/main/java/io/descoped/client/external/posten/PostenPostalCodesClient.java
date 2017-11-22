@@ -1,6 +1,7 @@
 package io.descoped.client.external.posten;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import io.descoped.client.exception.APIClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,7 @@ public class PostenPostalCodesClient {
 
     public Map<String, PostalCode> fetch() throws Exception {
         HttpRequest req = HttpRequest.get(POSTEN_URL);
-        if (!req.ok()) throw new RuntimeException("Error fetching postnr db: " + req.code());
+        if (!req.ok()) throw new APIClientException("Error fetching postnr db: " + req.code());
 
         File file = File.createTempFile("posten", ".tab");
         log.trace("Download file: {}", file.getAbsolutePath());

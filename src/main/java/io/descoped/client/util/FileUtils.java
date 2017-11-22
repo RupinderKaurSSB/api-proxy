@@ -28,7 +28,7 @@ public class FileUtils {
             if ((dir = Files.createDirectories(directory)) != null) {
                 log.trace("Created directory: {}", dir.toString());
             } else {
-                log.trace("Unable to create directory: {}", dir.toString());
+                log.trace("Unable to create directory: {}", directory.toString());
             }
         }
     }

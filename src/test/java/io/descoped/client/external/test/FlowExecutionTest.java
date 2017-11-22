@@ -1,6 +1,5 @@
 package io.descoped.client.external.test;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import io.descoped.client.external.facebook.FacebookClient;
 import io.descoped.client.external.google.GeoLocation;
 import io.descoped.client.external.google.GoogleMapsClient;
@@ -10,7 +9,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.net.HttpURLConnection.HTTP_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -33,8 +31,11 @@ public class FlowExecutionTest {
         log.trace("{}", geoLocation);
 
         FacebookClient facebookClient = new FacebookClient();
-        HttpRequest req = facebookClient.GET("me"); // <= make a graph api call to places and use geoLocation
-        assertThat(req.code()).isEqualTo(HTTP_OK);
-        log.trace("{}", req.body());
+        String json = facebookClient.getPageList(null,
+                geoLocation.getCenterLatitude(),
+                geoLocation.getCenterLongitude(),
+                geoLocation.getNorthEastRadius().intValue());
+        assertThat(json).isNotEmpty();
+        log.trace("{}", json);
     }
 }

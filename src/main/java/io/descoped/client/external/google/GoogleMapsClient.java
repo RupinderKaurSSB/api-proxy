@@ -2,6 +2,7 @@ package io.descoped.client.external.google;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import io.descoped.client.api.config.Configuration;
+import io.descoped.client.exception.APIClientException;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -22,7 +23,7 @@ public class GoogleMapsClient {
                 GeoLocation geoLocation = new GeoLocation(json);
                 return geoLocation;
             } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
+                throw new APIClientException(e);
             }
         }
         return null;

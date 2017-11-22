@@ -1,5 +1,7 @@
 package io.descoped.client.external.posten;
 
+import io.descoped.client.exception.APIClientException;
+
 /**
  * @author Ove Ranheim (oranheim@gmail.com)
  * @since 21/11/2017
@@ -32,7 +34,7 @@ public class PostalCode {
     public static PostalCode valueOf(String rowLine) {
         String[] splitted = splitLine(rowLine);
         if (splitted.length != 5)
-            throw new RuntimeException(String.format("Wrong number (%s) of row elements!", splitted.length));
+            throw new APIClientException(String.format("Wrong number (%s) of row elements!", splitted.length));
         return new PostalCode(splitted[0], splitted[1], splitted[2], splitted[3], PostalCodeCategory.valueOf(splitted[4]));
     }
 

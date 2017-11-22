@@ -5,6 +5,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import io.descoped.client.api.config.Configuration;
 import io.descoped.client.external.facebook.FacebookClient;
+import net.minidev.json.JSONArray;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,4 +40,20 @@ public class FacebookClientTest {
         log.trace("Name: {}", name);
     }
 
+    @Test
+    public void should_get_graph_pages_for_getoLoc() throws Exception {
+        FacebookClient client = new FacebookClient();
+        String payload = client.getPageList("live music", 59.9138688, 10.7522454, 5000);
+        assertThat(payload).isNotBlank();
+        log.trace("Pages:\n{}", payload);
+
+        DocumentContext ctx = JsonPath.parse(payload);
+        JSONArray arr = ctx.read("$.data[*]");
+        assertThat(arr).size().isGreaterThan(0);
+        log.trace("a: {}", arr.size());
+        arr.forEach((i) -> {
+            log.trace("{}", i); // LinkedHashMap
+        });
+
+    }
 }

@@ -1,5 +1,6 @@
 package io.descoped.client.api.config;
 
+import io.descoped.client.exception.APIClientException;
 import io.descoped.client.util.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class Configuration {
             }
             scanner.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new APIClientException(e);
         }
     }
 

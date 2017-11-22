@@ -1,6 +1,7 @@
 package io.descoped.client.external.enhreg;
 
 import com.github.kevinsawicki.http.HttpRequest;
+import io.descoped.client.exception.APIClientException;
 import io.descoped.client.util.ConsoleProgress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ import java.util.zip.GZIPInputStream;
  */
 public class BusinessEntityRegisterClient {
 
-    public static final List<String> FIELD_DEFS = getDatatypeList();
+    private static final List<String> FIELD_DEFS = getDatatypeList();
     private static final Logger log = LoggerFactory.getLogger(BusinessEntityRegisterClient.class);
     private static String BRREG_SELSKAPSINFO_URL = "http://data.brreg.no/enhetsregisteret/download/enheter";
     private static String SAFE_SPLIT_QUOTED_REGEXP = ";(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
@@ -107,7 +108,7 @@ public class BusinessEntityRegisterClient {
     public void fetch() throws IOException {
         log.trace("Fetch: {}", BRREG_SELSKAPSINFO_URL);
         HttpRequest req = HttpRequest.get(BRREG_SELSKAPSINFO_URL);
-        if (!req.ok()) throw new RuntimeException("Error fetching brreg selskapsdata");
+        if (!req.ok()) throw new APIClientException("Error fetching brreg selskapsdata");
 
         tempGZipFile = File.createTempFile("brreg-selskaper", ".tmp.gz");
         long contentLength = Long.valueOf(req.header("Content-Length"));
@@ -121,7 +122,7 @@ public class BusinessEntityRegisterClient {
     }
 
     public void unpack() throws IOException {
-        if (!tempGZipFile.exists()) throw new RuntimeException("You must call download before you can unpack");
+        if (!tempGZipFile.exists()) throw new APIClientException("You must call download before you can unpack");
         tempFile = File.createTempFile("brreg-selskaper", ".csv");
         log.trace("Unpack to: {}", tempFile.getAbsolutePath());
 
@@ -143,7 +144,7 @@ public class BusinessEntityRegisterClient {
             System.out.println("Done unpacking!");
 
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            throw new APIClientException(ex);
         }
     }
 
@@ -151,22 +152,23 @@ public class BusinessEntityRegisterClient {
         json = null;
         line = 0;
 
-        BufferedReader br = new BufferedReader(new FileReader(tempFile.toString()));
-        String rowLine;
-        while ((rowLine = br.readLine()) != null) {
-            if (line == 0) {
+        try (BufferedReader br = new BufferedReader(new FileReader(tempFile.toString()))) {
+            String rowLine;
+            while ((rowLine = br.readLine()) != null) {
+                if (line == 0) {
+                    line++;
+                    continue;
+                }
+                String[] splitted = splitLine(rowLine);
+                json = convertToJson(splitted);
+    //                log.trace("{}", json);
+
+                if (line % 100 == 0) log.trace("line: {}", line);
+
+                if (line > 10000) break;
+
                 line++;
-                continue;
             }
-            String[] splitted = splitLine(rowLine);
-            json = convertToJson(splitted);
-//                log.trace("{}", json);
-
-            if (line % 100 == 0) log.trace("line: {}", line);
-
-            if (line > 10000) break;
-
-            line++;
         }
 
 
