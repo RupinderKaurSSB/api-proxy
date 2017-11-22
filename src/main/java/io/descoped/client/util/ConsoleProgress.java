@@ -61,6 +61,7 @@ public class ConsoleProgress implements Runnable {
         try {
             Thread.currentThread().sleep(50);
         } catch (InterruptedException e) {
+            log.warn("Progress interrupted: {}", e.getMessage());
         }
     }
 
