@@ -30,7 +30,12 @@ public class CommonUtilTest {
 
     @Test
     public void testStreams() throws Exception {
-        OutputStream out = CommonUtil.newOutputStream();
+        OutputStream out = CommonUtil.getConsoleOutputStream();
+        assertThat(out).toString().isEmpty();
+        CommonUtil.closeConsoleOutputStream();
+        assertThat(CommonUtil.getConsoleOutputStream()).toString().isEmpty();
+
+        out = CommonUtil.newOutputStream();
         assertThat(out).toString().isEmpty();
 
         out.write("foo".getBytes());

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -84,6 +85,10 @@ public class CommonUtil {
         return outputLocal.get();
     }
 
+    public static void closeConsoleOutputStream() {
+        outputLocal.remove();
+    }
+
     public static OutputStream newOutputStream() {
         return new OutputStream() {
             private StringBuilder string = new StringBuilder();
@@ -97,8 +102,8 @@ public class CommonUtil {
             public synchronized void write(byte[] b, int off, int len) {
                 try {
                     this.string.append(new String(b, 0, len, "UTF-8"));
-                } catch (Exception e) {
-
+                } catch (UnsupportedEncodingException e) {
+                    log.error("Unsupported encoding: {}", e.getMessage());
                 }
             }
 
