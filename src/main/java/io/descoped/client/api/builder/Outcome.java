@@ -5,4 +5,7 @@ package io.descoped.client.api.builder;
  * @since 23/11/2017
  */
 public interface Outcome {
+
+    void foo();
+
 }

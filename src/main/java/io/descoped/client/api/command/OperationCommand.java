@@ -1,6 +1,5 @@
 package io.descoped.client.api.command;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
@@ -20,7 +19,7 @@ public class OperationCommand extends HystrixCommand<Operation<Outcome>> {
 
     protected OperationCommand(Operation operation, Outcome outcome) {
         super(HystrixCommand.Setter
-                .withGroupKey(HystrixCommandGroupKey.Factory.asKey("GitHubPage"))
+                .withGroupKey(HystrixCommandGroupKey.Factory.asKey("OperationCommand"))
                 .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
                         .withExecutionTimeoutInMilliseconds(300000))
                 .andThreadPoolPropertiesDefaults(
@@ -38,10 +37,11 @@ public class OperationCommand extends HystrixCommand<Operation<Outcome>> {
     @Override
     protected Operation<Outcome> run() throws Exception {
         // maybe ask for params too
-        String url = operation.getURL();
-        HttpRequest req = HttpRequest.get(url);
-        // add headers
-        // invoke an operation prepare
+        boolean ok = operation.execute();
+        if (ok) {
+//            outcome.handleResponse(operation);
+        }
+
         return null;
     }
 }

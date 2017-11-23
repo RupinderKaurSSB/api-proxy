@@ -1,5 +1,6 @@
 package io.descoped.client.api.test;
 
+import io.descoped.client.api.builder.APIBuilder;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,7 @@ public class APIClientTest {
     private static final Logger log = LoggerFactory.getLogger(APIClientTest.class);
 
     @Test
-    public void name() throws Exception {
-
+    public void testBuilder() throws Exception {
+        APIBuilder.builder().group("getBin");
     }
 }
