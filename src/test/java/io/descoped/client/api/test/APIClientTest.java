@@ -23,6 +23,8 @@ public class APIClientTest {
                 .worker("postHttpBin")
                     .operation(HttpBinOperation.class)
                     .outcome(HttpBinOutcome.class)
+                    .consume("http://httpbin.org/get/$1", "$param")
+                    .consume((j,p) -> j) // new ConsumerJob("http://httpbin.org/get/$1", "$param")
                     .done()
                 .worker("getHttpBin")
                     .operation(HttpBinOperation.class)
@@ -32,6 +34,12 @@ public class APIClientTest {
         ;
     }
 
+    /*
+        todo - tracking key data for request/response -headers, -content
+
+        1)
+     */
+
     @Test
     public void testHttpConsumer() throws Exception {
         HttpConsumer consumer = HttpConsumer.create().get("http://httpbin.org/get");
@@ -39,4 +47,5 @@ public class APIClientTest {
         OutcomeHandler outcome = consumer.getOutcome(); // outcome should handle success and failure
         log.trace("{}", outcome);
     }
+
 }

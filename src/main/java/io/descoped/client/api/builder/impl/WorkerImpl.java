@@ -1,6 +1,7 @@
 package io.descoped.client.api.builder.impl;
 
 import io.descoped.client.api.builder.Builder;
+import io.descoped.client.api.builder.ConsumerTask;
 import io.descoped.client.api.builder.Worker;
 import io.descoped.client.api.builder.intf.OperationHandler;
 import io.descoped.client.api.builder.intf.OutcomeHandler;
@@ -48,5 +49,15 @@ public class WorkerImpl implements Worker {
     @Override
     public Builder done() {
         return parent;
+    }
+
+    @Override
+    public Worker consume(String url, Object... param) {
+        return this;
+    }
+
+    @Override
+    public Worker consume(ConsumerTask<ConsumerJob> consumerTask) {
+        return this;
     }
 }

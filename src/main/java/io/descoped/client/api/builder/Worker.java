@@ -1,5 +1,6 @@
 package io.descoped.client.api.builder;
 
+import io.descoped.client.api.builder.impl.ConsumerJob;
 import io.descoped.client.api.builder.intf.OperationHandler;
 import io.descoped.client.api.builder.intf.OutcomeHandler;
 
@@ -14,4 +15,8 @@ public interface Worker {
     Worker outcome(Class<? extends OutcomeHandler> outcome);
 
     Builder done();
+
+    Worker consume(String url, Object... param);
+
+    Worker consume(ConsumerTask<ConsumerJob> consumerTask);
 }
