@@ -2,7 +2,7 @@ package io.descoped.client.api.builder;
 
 public interface Builder {
 
-    Builder group(String id);
+    Worker worker(String id);
 
-
+    Builder execute();
 }

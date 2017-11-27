@@ -105,6 +105,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.descoped.reflection</groupId>
             <artifactId>reflection-proxy</artifactId>
             <version>${descoped.reflection.version}</version>

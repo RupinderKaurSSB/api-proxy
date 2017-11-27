@@ -5,19 +5,19 @@ import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandProperties;
 import com.netflix.hystrix.HystrixThreadPoolProperties;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
-import io.descoped.client.api.builder.Operation;
-import io.descoped.client.api.builder.Outcome;
+import io.descoped.client.api.builder.intf.OperationHandler;
+import io.descoped.client.api.builder.intf.OutcomeHandler;
 
 /**
  * @author Ove Ranheim (oranheim@gmail.com)
  * @since 23/11/2017
  */
-public class OperationCommand extends HystrixCommand<Operation<Outcome>> {
+public class OperationCommand extends HystrixCommand<OutcomeHandler> {
 
-    private final Operation operation;
-    private final Outcome outcome;
+    private final OperationHandler operationHandler;
+//    private final OutcomeHandler outcomeHandler;
 
-    protected OperationCommand(Operation operation, Outcome outcome) {
+    public OperationCommand(OperationHandler operationHandler) {
         super(HystrixCommand.Setter
                 .withGroupKey(HystrixCommandGroupKey.Factory.asKey("OperationCommand"))
                 .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
@@ -28,20 +28,14 @@ public class OperationCommand extends HystrixCommand<Operation<Outcome>> {
                                 .withQueueSizeRejectionThreshold(100)
                                 .withCoreSize(4)));
 
-        this.operation = operation;
-        this.outcome = outcome;
+        this.operationHandler = operationHandler;
 
         HystrixRequestContext.initializeContext();
     }
 
     @Override
-    protected Operation<Outcome> run() throws Exception {
-        // maybe ask for params too
-        boolean ok = operation.execute();
-        if (ok) {
-//            outcome.handleResponse(operation);
-        }
-
-        return null;
+    protected OutcomeHandler run() throws Exception {
+        boolean ok = operationHandler.execute();
+        return operationHandler.getOutcomeHandler();
     }
 }

@@ -11,7 +11,7 @@ public class WorkerTaskTest {
 
     @Test
     public void name() throws Exception {
-//        APIBuilder.builder()
+//        APIClient.builder()
 //                .task(FacebookClient.class)
 //                .execute()
 //                .build();
