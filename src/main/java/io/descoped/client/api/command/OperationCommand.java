@@ -7,6 +7,8 @@ import com.netflix.hystrix.HystrixThreadPoolProperties;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
 import io.descoped.client.api.builder.intf.OperationHandler;
 import io.descoped.client.api.builder.intf.OutcomeHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Ove Ranheim (oranheim@gmail.com)
@@ -14,7 +16,9 @@ import io.descoped.client.api.builder.intf.OutcomeHandler;
  */
 public class OperationCommand extends HystrixCommand<OutcomeHandler> {
 
+    private static Logger log = LoggerFactory.getLogger(OperationCommand.class);
     private final OperationHandler operationHandler;
+    private String error;
 //    private final OutcomeHandler outcomeHandler;
 
     public OperationCommand(OperationHandler operationHandler) {
@@ -35,7 +39,18 @@ public class OperationCommand extends HystrixCommand<OutcomeHandler> {
 
     @Override
     protected OutcomeHandler run() throws Exception {
-        boolean ok = operationHandler.execute();
-        return operationHandler.getOutcomeHandler();
+        try {
+            boolean ok = operationHandler.execute();
+            return operationHandler.getOutcomeHandler();
+        } catch (Exception e) {
+            error = e.getMessage();
+            throw e;
+        }
+    }
+
+    @Override
+    protected OutcomeHandler getFallback() {
+        log.error(error);;
+        return null;
     }
 }

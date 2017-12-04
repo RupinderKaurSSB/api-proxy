@@ -3,6 +3,8 @@ package io.descoped.client.external.facebook;
 import com.github.kevinsawicki.http.HttpRequest;
 import io.descoped.client.api.config.Configuration;
 
+import java.util.Objects;
+
 /**
  * @author Ove Ranheim (oranheim@gmail.com)
  * @since 22/11/2017
@@ -19,6 +21,7 @@ public class FacebookConnect {
     }
 
     public static HttpRequest GET(String uri, String[]... headers) {
+        Objects.requireNonNull(uri);
         HttpRequest req = HttpRequest.get(String.format("https://graph.facebook.com/%s/%s", API_VERSION, checkURI(uri)));
 //        log.trace("URL => {}", req.url().toString());
         req.header("Authorization", "OAuth " + Configuration.getDeveloperAccessToken());

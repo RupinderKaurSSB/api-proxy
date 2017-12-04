@@ -36,6 +36,7 @@ public class FlowExecutionTest {
                 geoLocation.getCenterLongitude(),
                 geoLocation.getNorthEastRadius().intValue());
         assertThat(json).isNotEmpty();
+
         log.trace("{}", json);
     }
 }

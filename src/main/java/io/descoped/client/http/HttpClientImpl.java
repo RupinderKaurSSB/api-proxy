@@ -4,62 +4,66 @@ import com.github.kevinsawicki.http.HttpRequest;
 import io.descoped.client.api.builder.intf.OutcomeHandler;
 
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * @author Ove Ranheim (oranheim@gmail.com)
  * @since 24/11/2017
  */
-public class HttpConsumerImpl implements HttpConsumer {
+public class HttpClientImpl implements HttpClient {
 
     private HttpRequest req;
 
-    public HttpConsumerImpl() {
+    public HttpClientImpl() {
     }
 
     @Override
-    public HttpConsumer get(CharSequence url) {
-        req = HttpRequest.get(url);
-        return this;
+    public HttpGet get(CharSequence url) {
+//        req = HttpRequest.get(url);
+//        return this;
+        return null;
     }
 
     @Override
-    public HttpConsumer get(URL url) {
-        req = HttpRequest.get(url);
-        return this;
+    public HttpGet get(URL url) {
+        Objects.requireNonNull(url);
+//        req = HttpRequest.get(url);
+//        return this;
+        return null;
     }
 
     @Override
-    public HttpConsumer post(CharSequence url) {
+    public HttpClient post(CharSequence url) {
         req = HttpRequest.post(url);
         return this;
     }
 
     @Override
-    public HttpConsumer post(URL url) {
+    public HttpClient post(URL url) {
         req = HttpRequest.post(url);
         return this;
     }
 
     @Override
-    public HttpConsumer put(CharSequence url) {
+    public HttpClient put(CharSequence url) {
         req = HttpRequest.put(url);
         return this;
     }
 
     @Override
-    public HttpConsumer put(URL url) {
+    public HttpClient put(URL url) {
         req = HttpRequest.put(url);
         return this;
     }
 
     @Override
-    public HttpConsumer delete(CharSequence url) {
+    public HttpClient delete(CharSequence url) {
         req = HttpRequest.delete(url);
         return this;
     }
 
     @Override
-    public HttpConsumer delete(URL url) {
+    public HttpClient delete(URL url) {
         req = HttpRequest.delete(url);
         return this;
     }
