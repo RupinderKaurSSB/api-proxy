@@ -1,34 +1,18 @@
 package io.descoped.client.http;
 
-import io.descoped.client.api.builder.intf.OutcomeHandler;
-
-import java.net.URL;
-
 /**
  * @author Ove Ranheim (oranheim@gmail.com)
  * @since 24/11/2017
  */
-public interface HttpClient {
+public interface HttpClient<T> {
 
     static HttpClient create() {
         return new HttpClientImpl();
     }
 
-    HttpGet get(CharSequence url);
 
-    HttpGet get(URL url);
+    <T> HttpResponse<T> send​(HttpConsume req, HttpResponse.BodyProcessor<T> responseBodyHandler);
 
-    HttpClient post(CharSequence url);
+//    OutcomeHandler getOutcome();
 
-    HttpClient post(URL url);
-
-    HttpClient put(CharSequence url);
-
-    HttpClient put(URL url);
-
-    HttpClient delete(CharSequence url);
-
-    HttpClient delete(URL url);
-
-    OutcomeHandler getOutcome();
 }

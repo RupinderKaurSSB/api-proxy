@@ -4,7 +4,8 @@ import io.descoped.client.api.builder.APIClient;
 import io.descoped.client.api.test.impl.HttpBinOperation;
 import io.descoped.client.api.test.impl.HttpBinOutcome;
 import io.descoped.client.http.HttpClient;
-import io.descoped.client.http.HttpGet;
+import io.descoped.client.http.HttpConsume;
+import io.descoped.client.http.HttpResponse;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ public class APIClientTest {
     @Test
     public void testHttpConsumer() throws Exception {
         HttpClient client = HttpClient.create();
-        HttpGet consumer = client.get("http://httpbin.org/get");
+        HttpConsume consumer = client.send​(HttpConsume.create().get("http://httpbin.org/get"), HttpResponse.BodyProcessor.asByteArray​());
 
 
 //        OutcomeHandler outcome = consumer.getOutcome(); // outcome should handle success and failure
