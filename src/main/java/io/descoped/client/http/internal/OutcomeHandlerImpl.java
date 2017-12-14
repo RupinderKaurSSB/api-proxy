@@ -1,4 +1,4 @@
-package io.descoped.client.http;
+package io.descoped.client.http.internal;
 
 import io.descoped.client.api.builder.intf.OutcomeHandler;
 import io.descoped.client.exception.APIClientException;

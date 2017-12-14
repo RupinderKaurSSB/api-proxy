@@ -5,11 +5,13 @@ import io.descoped.client.api.test.impl.HttpBinOperation;
 import io.descoped.client.api.test.impl.HttpBinOutcome;
 import io.descoped.client.http.HttpClient;
 import io.descoped.client.http.HttpConsume;
+import io.descoped.client.http.HttpConsumeBuilder;
 import io.descoped.client.http.HttpResponse;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.util.stream.Stream;
 
 /**
@@ -45,7 +47,7 @@ public class APIClientTest {
     public void testBuilder2() throws Exception {
         APIClient.builder()
                 .worker("postHttpBin")
-                    .consume("http://httpbin.org/get/$1", Stream.of("$foo"))
+                    .consume("http://httpbin.org/GET/$1", Stream.of("$foo"))
                     .consume((j,p) -> j) // new ConsumerJob("http://httpbin.org/get/$1", "$param")
                     .produce()
                     .header()
@@ -59,7 +61,12 @@ public class APIClientTest {
     @Test
     public void testHttpConsumer() throws Exception {
         HttpClient client = HttpClient.create();
-        HttpConsume consumer = client.send​(HttpConsume.create().get("http://httpbin.org/get"), HttpResponse.BodyProcessor.asByteArray​());
+        HttpConsumeBuilder builder = HttpConsume.builder(URI.create("http://httpbin.org/GET")).GET();
+
+        HttpResponse.BodyProcessor<byte[]> handler = HttpResponse.BodyProcessor.asByteArray​();
+//        HttpResponse response = client.send​(builder, handler);
+
+
 
 
 //        OutcomeHandler outcome = consumer.getOutcome(); // outcome should handle success and failure
