@@ -45,7 +45,12 @@ public interface HttpResponse<T> {
 
     @FunctionalInterface
     interface BodyHandler<T> {
-        BodyProcessor<T> apply(int statusCode);
+        BodyProcessor<T> apply(int statusCode, HttpHeaders responseHeaders);
+
+        public static <U> BodyHandler<U> discard(U value) {
+            return (status, headers) -> BodyProcessor.discard(value);
+        }
+
     }
 }
 

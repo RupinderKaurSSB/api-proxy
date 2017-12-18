@@ -4,11 +4,11 @@ public interface HttpConsumeBuilder {
 
     HttpConsumeBuilder GET();
 
-    HttpConsumeBuilder POST(HttpResponse.BodyProcessor body);
+    HttpConsumeBuilder POST(HttpConsume.BodyProcessor body);
 
-    HttpConsumeBuilder DELETE(HttpResponse.BodyProcessor body);
+    HttpConsumeBuilder DELETE(HttpConsume.BodyProcessor body);
 
-    HttpConsumeBuilder PUT(HttpResponse.BodyProcessor body);
+    HttpConsumeBuilder PUT(HttpConsume.BodyProcessor body);
 
     HttpConsume build();
 

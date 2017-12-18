@@ -62,10 +62,12 @@ public class APIClientTest {
         HttpClient client = HttpClient.create();
         HttpConsume build = HttpConsume.builder(URI.create("http://httpbin.org/GET")).GET().build();
 
+
+
         HttpResponse.BodyProcessor<byte[]> handler = HttpResponse.BodyProcessor.asByteArray();
         HttpResponse response = client.send​(build, handler);
 
-        handler.x();
+
 
 
 

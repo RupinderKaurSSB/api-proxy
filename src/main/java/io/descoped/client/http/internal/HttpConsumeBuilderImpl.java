@@ -3,7 +3,6 @@ package io.descoped.client.http.internal;
 import io.descoped.client.http.HttpConsume;
 import io.descoped.client.http.HttpConsumeBuilder;
 import io.descoped.client.http.HttpHeaders;
-import io.descoped.client.http.HttpResponse;
 
 import java.net.URI;
 
@@ -14,7 +13,7 @@ public class HttpConsumeBuilderImpl implements HttpConsumeBuilder {
     private final HttpHeaders httpHeaders;
     private final URI uri;
     private String method;
-    private HttpResponse.BodyProcessor body;
+    private HttpConsume.BodyProcessor body;
 
     public HttpConsumeBuilderImpl(URI uri) {
         httpHeaders = new HttpHeadersImpl();
@@ -33,7 +32,7 @@ public class HttpConsumeBuilderImpl implements HttpConsumeBuilder {
         return method;
     }
 
-    public HttpResponse.BodyProcessor getBody() {
+    public HttpConsume.BodyProcessor getBody() {
         return body;
     }
 
@@ -43,21 +42,21 @@ public class HttpConsumeBuilderImpl implements HttpConsumeBuilder {
     }
 
     @Override
-    public HttpConsumeBuilder POST(HttpResponse.BodyProcessor body) {
+    public HttpConsumeBuilder POST(HttpConsume.BodyProcessor body) {
         return method("POST", body);
     }
 
     @Override
-    public HttpConsumeBuilder DELETE(HttpResponse.BodyProcessor body) {
+    public HttpConsumeBuilder DELETE(HttpConsume.BodyProcessor body) {
         return method("DELETE", body);
     }
 
     @Override
-    public HttpConsumeBuilder PUT(HttpResponse.BodyProcessor body) {
+    public HttpConsumeBuilder PUT(HttpConsume.BodyProcessor body) {
         return method("PUT", body);
     }
 
-    private HttpConsumeBuilder method(String method, HttpResponse.BodyProcessor body) {
+    private HttpConsumeBuilder method(String method, HttpConsume.BodyProcessor body) {
         this.method = requireNonNull(method);
         this.body = body;
         return this;

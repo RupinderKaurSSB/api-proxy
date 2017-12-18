@@ -15,7 +15,8 @@ public class HttpClientImpl implements HttpClient {
 
     @Override
     public HttpResponse send​(HttpConsume req, HttpResponse.BodyProcessor responseBodyHandler) {
-        return null;
+        HttpExchange exchange = new HttpExchange(req, responseBodyHandler);
+        return exchange.response();
     }
 
 }
