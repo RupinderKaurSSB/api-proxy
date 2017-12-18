@@ -41,7 +41,6 @@ public interface HttpResponse<T> {
 
 
 
-
     }
 
     @FunctionalInterface
