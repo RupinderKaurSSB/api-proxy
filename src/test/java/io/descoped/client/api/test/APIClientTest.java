@@ -6,6 +6,7 @@ import io.descoped.client.api.test.impl.HttpBinOutcome;
 import io.descoped.client.http.HttpClient;
 import io.descoped.client.http.HttpConsume;
 import io.descoped.client.http.HttpResponse;
+import io.descoped.client.http.internal.HttpExchange;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,12 +61,18 @@ public class APIClientTest {
     @Test
     public void testHttpConsumer() throws Exception {
         HttpClient client = HttpClient.create();
-        HttpConsume build = HttpConsume.builder(URI.create("http://httpbin.org/GET")).GET().build();
-
+        HttpConsume consume = HttpConsume.builder(URI.create("http://httpbin.org/get")).GET().build();
 
 
         HttpResponse.BodyProcessor<byte[]> handler = HttpResponse.BodyProcessor.asByteArray();
-        HttpResponse response = client.send​(build, handler);
+        HttpExchange exchange = new HttpExchange(consume, handler);
+        HttpResponse response = exchange.response();
+
+
+
+//        HttpResponse.BodyProcessor<byte[]> handler = HttpResponse.BodyProcessor.asByteArray();
+//        HttpResponse response = client.send​(build, handler);
+
 
 
 

@@ -28,4 +28,19 @@ public class HttpConsumeImpl implements HttpConsume {
         }
     }
 
+    public String getMethod() {
+        return method;
+    }
+
+    public URI getUri() {
+        return uri;
+    }
+
+    public boolean isSecure() {
+        return secure;
+    }
+
+    public BodyProcessor getRequestProcessor() {
+        return requestProcessor;
+    }
 }
