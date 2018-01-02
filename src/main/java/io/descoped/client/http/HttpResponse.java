@@ -39,8 +39,6 @@ public interface HttpResponse<T> {
             return new ResponseProcessor.NullProcessor<>(Optional.ofNullable(value));
         }
 
-
-
     }
 
     @FunctionalInterface

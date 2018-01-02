@@ -47,6 +47,10 @@ public class HttpExchange {
 
         try {
             log.info("---> {}", new String(bytes, StandardCharsets.UTF_8.name()) );
+
+//            responseBodyHandler.foo(req.bytes());
+
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

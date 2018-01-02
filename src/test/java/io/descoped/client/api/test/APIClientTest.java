@@ -47,7 +47,7 @@ public class APIClientTest {
     public void testBuilder2() throws Exception {
         APIClient.builder()
                 .worker("postHttpBin")
-                    .consume("http://httpbin.org/GET/$1", Stream.of("$foo"))
+                    .consume("http://httpbin.org/GET/$1", Stream.of("$handler"))
                     .consume((j,p) -> j) // new ConsumerJob("http://httpbin.org/get/$1", "$param")
                     .produce()
                     .header()
@@ -63,23 +63,14 @@ public class APIClientTest {
         HttpClient client = HttpClient.create();
         HttpConsume consume = HttpConsume.builder(URI.create("http://httpbin.org/get")).GET().build();
 
-
         HttpResponse.BodyProcessor<byte[]> handler = HttpResponse.BodyProcessor.asByteArray();
         HttpExchange exchange = new HttpExchange(consume, handler);
         HttpResponse response = exchange.response();
 
+        /*
+            Exchange.request(BodyHandler)
 
+         */
 
-//        HttpResponse.BodyProcessor<byte[]> handler = HttpResponse.BodyProcessor.asByteArray();
-//        HttpResponse response = client.send​(build, handler);
-
-
-
-
-
-
-//        OutcomeHandler outcome = consumer.getOutcome(); // outcome should handle success and failure
-//        log.trace("{}", outcome);
     }
-
 }
