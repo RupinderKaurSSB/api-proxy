@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -24,7 +25,7 @@ public class LambdaHandlerProcessorProducerTest {
         }
 
         public Processor<T> produce() {
-            return handler.apply("This is payload!");
+            return handler.apply(Optional.of("This is payload!"));
         }
     }
 
@@ -51,14 +52,14 @@ public class LambdaHandlerProcessorProducerTest {
 
     @FunctionalInterface
     interface Handler<T> {
-        Processor<T> apply(String payload);
+        Processor<T> apply(Optional<String> payload);
 
         static Handler<String> asString() {
-            return payload -> Processor.asValueProcessor(payload);
+            return payload -> Processor.asValueProcessor(payload.get());
         }
 
         static Handler<byte[]> asBytes() {
-            return payload -> Processor.asValueProcessor(payload.getBytes());
+            return payload -> Processor.asValueProcessor(payload.orElse("").getBytes());
         }
     }
 
