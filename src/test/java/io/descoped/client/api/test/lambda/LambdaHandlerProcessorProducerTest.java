@@ -4,17 +4,21 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.Assert.assertEquals;
+
 public class LambdaHandlerProcessorProducerTest {
 
     private static final Logger log = LoggerFactory.getLogger(LambdaHandlerProcessorProducerTest.class);
 
-    class Factory<T> {
+    class Singleton<T> {
         private Handler<T> handler;
 
-        public Factory() {
+        public Singleton() {
         }
 
-        public Factory<T> handle(Handler<T> handler) {
+        public Singleton<T> handle(Handler<T> handler) {
             this.handler = handler;
             return this;
         }
@@ -52,12 +56,20 @@ public class LambdaHandlerProcessorProducerTest {
         static Handler<String> asString() {
             return payload -> Processor.asValueProcessor(payload);
         }
+
+        static Handler<byte[]> asBytes() {
+            return payload -> Processor.asValueProcessor(payload.getBytes());
+        }
     }
 
     @Test
-    public void testMe() {
-        Factory<String> factory = new Factory<>();
-        log.trace("produced value: {}", factory.handle(Handler.asString()).produce().value());
+    public void testProcessors() {
+        Handler<String> stringHandler = Handler.asString();
+        String string = new Singleton<String>().handle(stringHandler).produce().value();
+        byte[] bytes = new Singleton<byte[]>().handle(Handler.asBytes()).produce().value();
+        assertEquals(string, new String(bytes, StandardCharsets.UTF_8));
+        log.trace("produced string value: {}", string);
+        log.trace("produced byte[] value: {}", bytes);
     }
 
 }
