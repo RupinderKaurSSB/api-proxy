@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,15 @@ public class ResponseBodyTest {
     public void testBodyProcessor() {
         byte[] a1 = "Foo".getBytes();
         byte[] a2 = "Bar".getBytes();
-//        ResponseProcessors.ByteArrayProcessor;
+
+        ResponseProcessors.ByteArrayProcessor<String> byteArrayProcessor = new ResponseProcessors.ByteArrayProcessor(bytes -> new String((byte[]) bytes, StandardCharsets.UTF_8));
+        byteArrayProcessor.open();
+        byteArrayProcessor.write(a1);
+        byteArrayProcessor.write(a2);
+        byteArrayProcessor.complete();
+        String s = byteArrayProcessor.getBody();
+
+        log.trace("s: {}", s);
+
     }
 }

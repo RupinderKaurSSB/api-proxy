@@ -6,6 +6,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class ResponseProcessors {
 
@@ -14,6 +15,7 @@ public class ResponseProcessors {
         abstract void write(byte[] bytes);
         abstract void error();
         abstract void complete();
+        abstract T getBody();
     }
 
     public static int remaining(List<ByteBuffer> bufs) {
@@ -23,6 +25,19 @@ public class ResponseProcessors {
         }
         return remain;
     }
+
+    static private byte[] join(List<ByteBuffer> bytes) {
+        int size = remaining(bytes);
+        byte[] res = new byte[size];
+        int from = 0;
+        for (ByteBuffer b : bytes) {
+            int l = b.remaining();
+            b.get(res, from, l);
+            from += l;
+        }
+        return res;
+    }
+
 
     public static class PathProcessor<T> extends AbstractProcessor<T> {
         private final Path file;
@@ -55,42 +70,50 @@ public class ResponseProcessors {
         void complete() {
 
         }
+
+        @Override
+        T getBody() {
+            return null;
+        }
     }
 
 
     public static class ByteArrayProcessor<T> extends AbstractProcessor<T> {
-
-        private T result;
+        private Function<byte[], T> finisher;
         private List<ByteBuffer> received;
+        private T result;
 
-        public ByteArrayProcessor() {
+        public ByteArrayProcessor(Function<byte[],T> finisher) {
+            this.finisher = finisher;
         }
 
         @Override
-        void open() {
+        public void open() {
             received = new ArrayList<>();
         }
 
         @Override
-        void write(byte[] bytes) {
+        public void write(byte[] bytes) {
             received.add(ByteBuffer.wrap(bytes));
         }
 
 
         @Override
-        void error() {
-
+        public void error() {
+            // incomplete handling
         }
 
         @Override
-        void complete() {
-            int bufSize = remaining(received);
-
-            for (ByteBuffer bb : received) {
-
-            }
+        public void complete() {
+            result = finisher.apply(join(received));
+            received.clear();
         }
-    }
 
+        @Override
+        public T getBody() {
+            return result;
+        }
+
+    }
 
 }
