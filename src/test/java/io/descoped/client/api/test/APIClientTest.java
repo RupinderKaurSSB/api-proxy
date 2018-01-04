@@ -63,12 +63,11 @@ public class APIClientTest {
     public void testHttpConsumer() throws Exception {
         Client client = Client.create();
         Request consume = Request.builder(URI.create("http://httpbin.org/get")).GET().build();
-
         ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
         HttpRequestExchange<byte[]> exchange = new HttpRequestExchange(consume, handler);
         Response<byte[]> response = exchange.response();
         byte[] body = response.body();
-        log.trace("body: {}", body);
+        log.trace("body: {}", new String(body));
 
         /*
             Exchange.request(BodyHandler)

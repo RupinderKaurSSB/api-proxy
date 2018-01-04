@@ -5,6 +5,7 @@ import io.descoped.client.http.*;
 import io.descoped.client.http.internal.HeadersImpl;
 import io.descoped.client.http.internal.RequestImpl;
 import io.descoped.client.http.internal.ResponseImpl;
+import io.descoped.client.http.internal.ResponseProcessors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +53,10 @@ public class HttpRequestExchange<T> {
 
         Headers responseHeaders = new HeadersImpl(responseHeadersMap);
         ResponseBodyProcessor<T> result = responseBodyHandler.apply(statusCode, responseHeaders);
+        ResponseProcessors.AbstractProcessor abstractProcessor = (ResponseProcessors.AbstractProcessor) result;
+        abstractProcessor.open();
+        abstractProcessor.write(req.bytes());
+        abstractProcessor.complete();
         ResponseImpl<T> response = new ResponseImpl<T>(consumeImpl, statusCode, responseHeaders, result.getBody(), this);
         return response;
     }
