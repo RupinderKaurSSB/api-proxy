@@ -17,9 +17,9 @@ public class ResponseImpl<T> implements Response<T> {
     final T body;
 
     public ResponseImpl(Request initialRequest,
-                            int statusCode,
+                        int statusCode,
                         Headers responseHeaders,
-                            T body, HttpRequestExchange<T> exch) {
+                        T body, HttpRequestExchange<T> exch) {
         this.responseCode = statusCode;
         this.exchange = exch;
         this.initialRequest = (RequestImpl) initialRequest;

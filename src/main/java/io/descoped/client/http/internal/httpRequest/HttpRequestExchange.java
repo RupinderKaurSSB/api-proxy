@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-public class HttpRequestExchange<T> {
+public class HttpRequestExchange<T> implements Exchange<T> {
 
     private static Logger log = LoggerFactory.getLogger(HttpRequestExchange.class);
 

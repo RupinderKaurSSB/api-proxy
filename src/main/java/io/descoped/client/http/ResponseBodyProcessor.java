@@ -9,6 +9,4 @@ public interface ResponseBodyProcessor<T> {
      */
     T getBody();
 
-
-
 }
