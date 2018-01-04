@@ -1,5 +1,7 @@
 package io.descoped.exp.http.internal;
 
+import io.descoped.exp.http.ResponseBodyProcessor;
+
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.OpenOption;
@@ -10,12 +12,12 @@ import java.util.function.Function;
 
 public class ResponseProcessors {
 
-    static abstract class AbstractProcessor<T> {
+    static abstract class AbstractProcessor<T> implements ResponseBodyProcessor<T> {
         abstract void open();
         abstract void write(byte[] bytes);
         abstract void error();
         abstract void complete();
-        abstract T getBody();
+//        abstract T getBody();
     }
 
     public static int remaining(List<ByteBuffer> bufs) {
@@ -52,27 +54,27 @@ public class ResponseProcessors {
         }
 
         @Override
-        void open() {
+       public void open() {
 
         }
 
         @Override
-        void write(byte[] bytes) {
+        public void write(byte[] bytes) {
 
         }
 
         @Override
-        void error() {
+        public void error() {
 
         }
 
         @Override
-        void complete() {
+        public void complete() {
 
         }
 
         @Override
-        T getBody() {
+        public T getBody() {
             return null;
         }
     }
