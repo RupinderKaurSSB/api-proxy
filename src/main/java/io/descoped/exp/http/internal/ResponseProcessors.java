@@ -1,23 +1,31 @@
 package io.descoped.exp.http.internal;
 
+import io.descoped.exp.http.Headers;
 import io.descoped.exp.http.ResponseBodyProcessor;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class ResponseProcessors {
 
-    static abstract class AbstractProcessor<T> implements ResponseBodyProcessor<T> {
-        abstract void open();
-        abstract void write(byte[] bytes);
-        abstract void error();
-        abstract void complete();
-//        abstract T getBody();
+    public static abstract class AbstractProcessor<T> implements ResponseBodyProcessor<T> {
+        public abstract void open();
+
+        public abstract void write(byte[] bytes);
+
+        public abstract void error();
+
+        public abstract void complete();
     }
 
     public static int remaining(List<ByteBuffer> bufs) {
@@ -28,7 +36,7 @@ public class ResponseProcessors {
         return remain;
     }
 
-    static private byte[] join(List<ByteBuffer> bytes) {
+    public static byte[] join(List<ByteBuffer> bytes) {
         int size = remaining(bytes);
         byte[] res = new byte[size];
         int from = 0;
@@ -40,42 +48,67 @@ public class ResponseProcessors {
         return res;
     }
 
+    public static void close(Closeable... closeables) {
+        for (Closeable c : closeables) {
+            try {
+                c.close();
+            } catch (IOException ignored) {
+            }
+        }
+    }
 
-    public static class PathProcessor<T> extends AbstractProcessor<T> {
+    public static Charset charsetFrom(Optional<Headers> headers) {
+        String encoding = headers.orElse(new HeadersImpl()).firstValue("Content-encoding")
+                .orElse("UTF_8");
+        try {
+            return Charset.forName(encoding);
+        } catch (IllegalArgumentException e) {
+            return StandardCharsets.UTF_8;
+        }
+    }
+
+
+    public static class PathProcessor extends AbstractProcessor<Path> {
         private final Path file;
-//        private ByteBuff
-
         private FileChannel out;
         private final OpenOption[] options;
 
-        PathProcessor(Path file, OpenOption... options) {
+        public PathProcessor(Path file, OpenOption... options) {
             this.file = file;
             this.options = options;
         }
 
         @Override
-       public void open() {
-
+        public void open() {
+            try {
+                out = FileChannel.open(file, options);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         @Override
         public void write(byte[] bytes) {
-
+            try {
+                out.write(ByteBuffer.wrap(bytes));
+            } catch (IOException ex) {
+                close(out);
+            }
         }
 
         @Override
         public void error() {
-
+            throw new RuntimeException();
         }
 
         @Override
         public void complete() {
-
+            close(out);
         }
 
         @Override
-        public T getBody() {
-            return null;
+        public Path getBody() {
+            return file;
         }
     }
 
@@ -85,7 +118,7 @@ public class ResponseProcessors {
         private List<ByteBuffer> received;
         private T result;
 
-        public ByteArrayProcessor(Function<byte[],T> finisher) {
+        public ByteArrayProcessor(Function<byte[], T> finisher) {
             this.finisher = finisher;
         }
 
@@ -102,7 +135,7 @@ public class ResponseProcessors {
 
         @Override
         public void error() {
-            // incomplete handling
+            throw new RuntimeException();
         }
 
         @Override

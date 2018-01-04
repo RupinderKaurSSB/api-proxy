@@ -2,7 +2,14 @@ package io.descoped.exp.http;
 
 import io.descoped.exp.http.internal.ResponseProcessors;
 
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
+import java.util.Optional;
+
+/**
+ * todo: status code is not used. need to determine use in context of exchange
+ *
+ * @param <T>
+ */
 
 @FunctionalInterface
 public interface ResponseBodyHandler<T> {
@@ -15,7 +22,16 @@ public interface ResponseBodyHandler<T> {
     }
 
     static ResponseBodyHandler<String> asString() {
-        return (statusCode, responseHeaders) -> new ResponseProcessors.ByteArrayProcessor<>(bytes-> new String(bytes, StandardCharsets.UTF_8));
+        return (statusCode, responseHeaders) -> new ResponseProcessors.ByteArrayProcessor<>(bytes -> new String(bytes, ResponseProcessors.charsetFrom(Optional.ofNullable(responseHeaders))));
+    }
+
+    static ResponseBodyHandler<String> asString(Charset charset) {
+        return (statusCode, responseHeaders) -> {
+            if (charset != null) {
+                return new ResponseProcessors.ByteArrayProcessor<>(bytes -> new String(bytes, charset));
+            }
+            return new ResponseProcessors.ByteArrayProcessor<>(bytes -> new String(bytes, ResponseProcessors.charsetFrom(Optional.ofNullable(responseHeaders))));
+        };
     }
 
 }
