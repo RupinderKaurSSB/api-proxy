@@ -10,6 +10,6 @@ public interface RequestBuilder {
 
     RequestBuilder PUT(RequestBodyProcessor body);
 
-    RequestBuilder build();
+    Request build();
 
 }

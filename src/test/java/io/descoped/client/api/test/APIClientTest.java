@@ -3,10 +3,11 @@ package io.descoped.client.api.test;
 import io.descoped.client.api.builder.APIClient;
 import io.descoped.client.api.test.impl.HttpBinOperation;
 import io.descoped.client.api.test.impl.HttpBinOutcome;
-import io.descoped.client.http.HttpClient;
-import io.descoped.client.http.HttpConsume;
-import io.descoped.client.http.HttpResponse;
-import io.descoped.client.http.internal.HttpExchange;
+import io.descoped.exp.http.Client;
+import io.descoped.exp.http.Request;
+import io.descoped.exp.http.Response;
+import io.descoped.exp.http.ResponseBodyHandler;
+import io.descoped.exp.http.internal.HttpRequestExchange;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,12 +61,12 @@ public class APIClientTest {
 
     @Test
     public void testHttpConsumer() throws Exception {
-        HttpClient client = HttpClient.create();
-        HttpConsume consume = HttpConsume.builder(URI.create("http://httpbin.org/get")).GET().build();
+        Client client = Client.create();
+        Request consume = Request.builder(URI.create("http://httpbin.org/get")).GET().build();
 
-        HttpResponse.BodyProcessor<byte[]> handler = HttpResponse.BodyProcessor.asByteArray();
-        HttpExchange exchange = new HttpExchange(consume, handler);
-        HttpResponse response = exchange.response();
+        ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
+        HttpRequestExchange exchange = new HttpRequestExchange(consume, handler);
+        Response response = exchange.response();
 
         /*
             Exchange.request(BodyHandler)
