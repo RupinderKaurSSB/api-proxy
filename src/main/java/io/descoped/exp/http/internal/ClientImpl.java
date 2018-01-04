@@ -4,6 +4,7 @@ import io.descoped.exp.http.Client;
 import io.descoped.exp.http.Request;
 import io.descoped.exp.http.Response;
 import io.descoped.exp.http.ResponseBodyHandler;
+import io.descoped.exp.http.internal.httpRequest.HttpRequestExchange;
 
 /**
  * @author Ove Ranheim (oranheim@gmail.com)

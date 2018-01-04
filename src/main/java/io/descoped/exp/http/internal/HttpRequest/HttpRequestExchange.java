@@ -1,9 +1,10 @@
-package io.descoped.exp.http.internal;
+package io.descoped.exp.http.internal.httpRequest;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import io.descoped.exp.http.Request;
 import io.descoped.exp.http.Response;
 import io.descoped.exp.http.ResponseBodyHandler;
+import io.descoped.exp.http.internal.RequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

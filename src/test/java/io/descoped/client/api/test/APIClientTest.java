@@ -7,7 +7,7 @@ import io.descoped.exp.http.Client;
 import io.descoped.exp.http.Request;
 import io.descoped.exp.http.Response;
 import io.descoped.exp.http.ResponseBodyHandler;
-import io.descoped.exp.http.internal.HttpRequestExchange;
+import io.descoped.exp.http.internal.httpRequest.HttpRequestExchange;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
