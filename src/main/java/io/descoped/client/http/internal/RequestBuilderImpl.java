@@ -1,9 +1,9 @@
-package io.descoped.exp.http.internal;
+package io.descoped.client.http.internal;
 
-import io.descoped.exp.http.Headers;
-import io.descoped.exp.http.Request;
-import io.descoped.exp.http.RequestBodyProcessor;
-import io.descoped.exp.http.RequestBuilder;
+import io.descoped.client.http.Headers;
+import io.descoped.client.http.Request;
+import io.descoped.client.http.RequestBodyProcessor;
+import io.descoped.client.http.RequestBuilder;
 
 import java.net.URI;
 

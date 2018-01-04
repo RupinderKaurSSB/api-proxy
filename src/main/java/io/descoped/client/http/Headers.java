@@ -1,4 +1,4 @@
-package io.descoped.exp.http;
+package io.descoped.client.http;
 
 import java.util.List;
 import java.util.Map;

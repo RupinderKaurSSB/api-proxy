@@ -1,7 +1,7 @@
-package io.descoped.exp.http.internal;
+package io.descoped.client.http.internal;
 
-import io.descoped.exp.http.Headers;
-import io.descoped.exp.http.ResponseBodyProcessor;
+import io.descoped.client.http.Headers;
+import io.descoped.client.http.ResponseBodyProcessor;
 
 import java.io.Closeable;
 import java.io.IOException;

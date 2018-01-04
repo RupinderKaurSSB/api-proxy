@@ -3,11 +3,11 @@ package io.descoped.client.api.test;
 import io.descoped.client.api.builder.APIClient;
 import io.descoped.client.api.test.impl.HttpBinOperation;
 import io.descoped.client.api.test.impl.HttpBinOutcome;
-import io.descoped.exp.http.Client;
-import io.descoped.exp.http.Request;
-import io.descoped.exp.http.Response;
-import io.descoped.exp.http.ResponseBodyHandler;
-import io.descoped.exp.http.internal.httpRequest.HttpRequestExchange;
+import io.descoped.client.http.Client;
+import io.descoped.client.http.Request;
+import io.descoped.client.http.Response;
+import io.descoped.client.http.ResponseBodyHandler;
+import io.descoped.client.http.internal.httpRequest.HttpRequestExchange;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,12 +65,13 @@ public class APIClientTest {
         Request consume = Request.builder(URI.create("http://httpbin.org/get")).GET().build();
 
         ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
-        HttpRequestExchange exchange = new HttpRequestExchange(consume, handler);
-        Response response = exchange.response();
+        HttpRequestExchange<byte[]> exchange = new HttpRequestExchange(consume, handler);
+        Response<byte[]> response = exchange.response();
+        byte[] body = response.body();
+        log.trace("body: {}", body);
 
         /*
             Exchange.request(BodyHandler)
-
          */
 
     }

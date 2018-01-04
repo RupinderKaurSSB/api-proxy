@@ -1,6 +1,6 @@
-package io.descoped.exp.http.internal;
+package io.descoped.client.http.internal;
 
-import io.descoped.exp.http.Headers;
+import io.descoped.client.http.Headers;
 
 import java.util.*;
 
@@ -10,6 +10,11 @@ public class HeadersImpl implements Headers {
 
     public HeadersImpl() {
         headers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    }
+
+    public HeadersImpl(Map<String, List<String>> mapHeaders) {
+        this();
+//        headers.putAll(Optional.ofNullable(mapHeaders).orElse(new TreeMap<String, List<String>>()));
     }
 
     @Override

@@ -1,6 +1,6 @@
-package io.descoped.exp.http;
+package io.descoped.client.http;
 
-import io.descoped.exp.http.internal.RequestBuilderImpl;
+import io.descoped.client.http.internal.RequestBuilderImpl;
 
 import java.net.URI;
 

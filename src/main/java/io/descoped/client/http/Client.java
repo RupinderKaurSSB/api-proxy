@@ -1,6 +1,6 @@
-package io.descoped.exp.http;
+package io.descoped.client.http;
 
-import io.descoped.exp.http.internal.ClientImpl;
+import io.descoped.client.http.internal.ClientImpl;
 
 /**
  * @author Ove Ranheim (oranheim@gmail.com)

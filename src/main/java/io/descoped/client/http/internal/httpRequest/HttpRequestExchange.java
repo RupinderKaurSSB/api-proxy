@@ -1,29 +1,29 @@
-package io.descoped.exp.http.internal.httpRequest;
+package io.descoped.client.http.internal.httpRequest;
 
 import com.github.kevinsawicki.http.HttpRequest;
-import io.descoped.exp.http.Request;
-import io.descoped.exp.http.Response;
-import io.descoped.exp.http.ResponseBodyHandler;
-import io.descoped.exp.http.internal.RequestImpl;
+import io.descoped.client.http.*;
+import io.descoped.client.http.internal.HeadersImpl;
+import io.descoped.client.http.internal.RequestImpl;
+import io.descoped.client.http.internal.ResponseImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
-public class HttpRequestExchange {
+public class HttpRequestExchange<T> {
 
     private static Logger log = LoggerFactory.getLogger(HttpRequestExchange.class);
 
     private final Request consumer;
-    private final ResponseBodyHandler responseBodyHandler;
+    private final ResponseBodyHandler<T> responseBodyHandler;
 
-    public HttpRequestExchange(Request consumer, ResponseBodyHandler responseBodyHandler) {
+    public HttpRequestExchange(Request consumer, ResponseBodyHandler<T> responseBodyHandler) {
         this.consumer = consumer;
         this.responseBodyHandler = responseBodyHandler;
     }
 
-    public Response response() {
+    public Response<T> response() {
         RequestImpl consumeImpl = (RequestImpl) consumer;
 
         HttpRequest req;
@@ -44,20 +44,16 @@ public class HttpRequestExchange {
             throw new UnsupportedOperationException("Method not supported!");
         }
 
+        // obtain payload
+
         int statusCode = req.code();
-        byte[] bytes = req.bytes();
+        Map<String, List<String>> responseHeadersMap = req.headers();
+        log.info("===> {}", responseHeadersMap);
 
-        try {
-            log.info("---> {}", new String(bytes, StandardCharsets.UTF_8.name()) );
-
-//            responseBodyHandler.foo(req.bytes());
-
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        Headers responseHeaders = new HeadersImpl(responseHeadersMap);
+        ResponseBodyProcessor<T> result = responseBodyHandler.apply(statusCode, responseHeaders);
+        ResponseImpl<T> response = new ResponseImpl<T>(consumeImpl, statusCode, responseHeaders, result.getBody(), this);
+        return response;
     }
 
 }

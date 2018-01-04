@@ -1,8 +1,8 @@
-package io.descoped.exp.http.test;
+package io.descoped.client.http.test;
 
+import io.descoped.client.http.RequestBodyProcessor;
 import io.descoped.client.util.CommonUtil;
 import io.descoped.client.util.FileUtils;
-import io.descoped.exp.http.RequestBodyProcessor;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package io.descoped.client.api.builder.intf;
 
-import io.descoped.exp.http.internal.apiBuilder.OutcomeHandlerImpl;
+import io.descoped.client.http.internal.apiBuilder.OutcomeHandlerImpl;
 
 import java.util.List;
 import java.util.Map;

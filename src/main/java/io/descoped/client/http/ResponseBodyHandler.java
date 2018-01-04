@@ -1,6 +1,6 @@
-package io.descoped.exp.http;
+package io.descoped.client.http;
 
-import io.descoped.exp.http.internal.ResponseProcessors;
+import io.descoped.client.http.internal.ResponseProcessors;
 
 import java.nio.charset.Charset;
 import java.util.Optional;
