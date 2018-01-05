@@ -4,6 +4,10 @@ import io.descoped.client.api.builder.APIClient;
 import io.descoped.client.api.test.impl.HttpBinOperation;
 import io.descoped.client.api.test.impl.HttpBinOutcome;
 import io.descoped.client.http.*;
+import io.descoped.server.http.LoopbackRoute;
+import io.descoped.server.http.WebServer;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +29,21 @@ public class APIClientTest {
         1)
      */
 
+    private WebServer server;
+
+    @Before
+    public void setUp() throws Exception {
+        server = new WebServer();
+        server.addRoute("/dump", new LoopbackRoute());
+        server.start();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        server.stop();
+    }
+
+
 //    @Test
     public void testBuilder() throws Exception {
         APIClient.builder()
@@ -44,7 +63,7 @@ public class APIClientTest {
     public void testBuilder2() throws Exception {
         APIClient.builder()
                 .worker("postHttpBin")
-                    .consume("http://httpbin.org/GET/$1", Stream.of("$handler"))
+                    .consume(server.baseURL(URI.create("/GET/$1")), Stream.of("$handler"))
                     .consume((j,p) -> j) // new ConsumerJob("http://httpbin.org/get/$1", "$param")
                     .produce()
                     .header()
@@ -58,7 +77,7 @@ public class APIClientTest {
     @Test
     public void testHttpConsumer() throws Exception {
         Client client = Client.create();
-        Request consume = Request.builder(URI.create("http://httpbin.org/post")).POST(RequestBodyProcessor.fromString("foo=bar")).build();
+        Request consume = Request.builder(URI.create(server.baseURL(URI.create("/dump")))).POST(RequestBodyProcessor.fromString("foo=bar")).build();
         ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
         Exchange<byte[]> exchange = Exchange.createHttpRequestExchange(consume, handler);
         Response<byte[]> response = exchange.response();
@@ -68,6 +87,9 @@ public class APIClientTest {
         /*
             Exchange.request(BodyHandler)
          */
+
+//        HttpRequest req = HttpRequest.get("http://httpbin.org/get");
+//        req.headers();
 
     }
 }

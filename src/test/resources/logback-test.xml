@@ -22,7 +22,8 @@
     </appender>
 
     <logger name="io.descoped" level="TRACE"/>
-    <logger name="no.cantara.file.watcher" level="INFO"/>
+    <logger name="org.xnio" level="INFO"/>
+    <logger name="io.undertow" level="INFO"/>
 
     <root level="TRACE">
         <appender-ref ref="STDOUT"/>
