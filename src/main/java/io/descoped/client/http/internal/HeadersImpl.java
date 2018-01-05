@@ -14,6 +14,15 @@ public class HeadersImpl implements Headers {
 
     public HeadersImpl(Map<String, List<String>> mapHeaders) {
         this();
+        Map<String,List<String>> map = new TreeMap<>();
+        int n = 0;
+        for(Map.Entry<String, List<String>> e : mapHeaders.entrySet()) {
+            if (n == 0) {
+                n++;
+                continue;
+            }
+            headers.put(e.getKey(), e.getValue());
+        }
 //        headers.putAll(Optional.ofNullable(mapHeaders).orElse(new TreeMap<String, List<String>>()));
     }
 

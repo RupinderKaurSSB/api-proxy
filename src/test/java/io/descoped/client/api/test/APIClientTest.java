@@ -58,12 +58,12 @@ public class APIClientTest {
     @Test
     public void testHttpConsumer() throws Exception {
         Client client = Client.create();
-        Request consume = Request.builder(URI.create("http://httpbin.org/get")).GET().build();
+        Request consume = Request.builder(URI.create("http://httpbin.org/post")).POST(RequestBodyProcessor.fromString("foo=bar")).build();
         ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
         Exchange<byte[]> exchange = Exchange.createHttpRequestExchange(consume, handler);
         Response<byte[]> response = exchange.response();
         byte[] body = response.body();
-        log.trace("body: {}", new String(body));
+        log.trace("body [{}]: {}", response.statusCode(), new String(body));
 
         /*
             Exchange.request(BodyHandler)
