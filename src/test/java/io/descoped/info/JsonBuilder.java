@@ -7,39 +7,39 @@ import java.util.List;
  * origin: descoped-container
  * Created by oranheim on 04/02/2017.
  */
-public class InfoBuilder {
+public class JsonBuilder {
 
     private static final ThreadLocal<StringBuilder> stringBuilderLocal = ThreadLocal.withInitial(() -> new StringBuilder());
-    //    private static final Logger log = LoggerFactory.getLogger(InfoBuilder.class);
+    //    private static final Logger log = LoggerFactory.getLogger(JsonBuilder.class);
     private TreeNode<KeyValue> root = new TreeNode<>();
     private TreeNode<KeyValue> current;
 
-    private InfoBuilder() {
+    private JsonBuilder() {
         current = root;
     }
 
-    public static InfoBuilder builder() {
+    public static JsonBuilder builder() {
         stringBuilderLocal.remove();
-        return new InfoBuilder();
+        return new JsonBuilder();
     }
 
-    public InfoBuilder key(String key) {
+    public JsonBuilder key(String key) {
         TreeNode<KeyValue> keyNode = current.add(new KeyValue(key));
         current = keyNode;
         return this;
     }
 
-    public InfoBuilder keyValue(String key, String value) {
+    public JsonBuilder keyValue(String key, String value) {
         current.add(new KeyValue(key, value));
         return this;
     }
 
-    public InfoBuilder up() {
+    public JsonBuilder up() {
         current = current.getParent();
         return this;
     }
 
-    public InfoBuilder dump() {
+    public JsonBuilder dump() {
         return dump(root);
     }
 
@@ -51,7 +51,7 @@ public class InfoBuilder {
         return sb.toString();
     }
 
-    private InfoBuilder dump(TreeNode<KeyValue> treeRoot) {
+    private JsonBuilder dump(TreeNode<KeyValue> treeRoot) {
         String indent = createIndent(treeRoot.getLevel());
         System.out.println(indent + "(" + treeRoot.getLevel() + ") " + (treeRoot.getData() == null ? "[ROOT]" : treeRoot.getData()));
         for (TreeNode<KeyValue> node : treeRoot.getChildren()) {
