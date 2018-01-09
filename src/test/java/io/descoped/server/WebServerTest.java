@@ -2,7 +2,7 @@ package io.descoped.server;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import io.descoped.server.http.LoopbackRoute;
-import io.descoped.server.http.WebServer;
+import io.descoped.server.http.TestWebServer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +16,11 @@ public class WebServerTest {
 
     private static final Logger log = LoggerFactory.getLogger(WebServerTest.class);
 
-    private WebServer server;
+    private TestWebServer server;
 
     @Before
     public void setUp() throws Exception {
-        server = new WebServer();
+        server = new TestWebServer();
         server.addRoute("/dump", new LoopbackRoute());
         server.start();
     }
@@ -32,7 +32,7 @@ public class WebServerTest {
 
     @Test
     public void should_get_request() throws UnsupportedEncodingException {
-//        WebServer.sleep(20000L);
+//        TestWebServer.sleep(20000L);
         HttpRequest req = HttpRequest.get(server.baseURL(URI.create("/dump?foo=bar")));
         req.header("foo", "bar");
         req.send("foo=bar");

@@ -4,6 +4,7 @@ import io.descoped.client.http.Request;
 import io.descoped.client.http.RequestBodyProcessor;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.Locale;
 
 public class RequestImpl implements Request {
@@ -12,6 +13,7 @@ public class RequestImpl implements Request {
     private final URI uri;
     private final boolean secure;
     private final RequestBodyProcessor requestProcessor;
+    private final Duration duration;
     private RequestBuilderImpl builder;
 
     public RequestImpl(RequestBuilderImpl builder) {
@@ -27,6 +29,7 @@ public class RequestImpl implements Request {
         } else {
             this.requestProcessor = builder.getBody();
         }
+        this.duration = builder.getDuration();
     }
 
     public String getMethod() {

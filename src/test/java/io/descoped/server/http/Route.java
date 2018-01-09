@@ -7,4 +7,7 @@ public interface Route {
 
     void dispatch(HttpServerExchange exchange);
 
+    static Route createLoopback() {
+        return new LoopbackRoute();
+    }
 }

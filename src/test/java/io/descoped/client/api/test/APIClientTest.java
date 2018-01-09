@@ -4,8 +4,9 @@ import io.descoped.client.api.builder.APIClient;
 import io.descoped.client.api.test.impl.HttpBinOperation;
 import io.descoped.client.api.test.impl.HttpBinOutcome;
 import io.descoped.client.http.*;
-import io.descoped.server.http.LoopbackRoute;
-import io.descoped.server.http.WebServer;
+import io.descoped.server.http.Route;
+import io.descoped.server.http.TestWebServer;
+import io.undertow.util.Headers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,12 +30,20 @@ public class APIClientTest {
         1)
      */
 
-    private WebServer server;
+    private TestWebServer server;
 
     @Before
     public void setUp() throws Exception {
-        server = new WebServer();
-        server.addRoute("/dump", new LoopbackRoute());
+        server = new TestWebServer();
+        server.addRoute("/dump", Route.createLoopback());
+        server.addRoute("/get", exchange -> {
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+            exchange.getResponseSender().send("/FooBar");
+        });
+        server.addRoute("/post", exchange -> {
+            exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+            exchange.getResponseSender().send("/BarBaz");
+        });
         server.start();
     }
 
@@ -74,15 +83,26 @@ public class APIClientTest {
         ;
     }
 
-    @Test
-    public void testHttpConsumer() throws Exception {
+//    @Test
+    public void testHttpConsumerGet() throws Exception {
         Client client = Client.create();
-        Request consume = Request.builder(URI.create(server.baseURL(URI.create("/dump")))).POST(RequestBodyProcessor.fromString("foo=bar")).build();
+        Request consume = Request.builder(server.baseURL("/get?foo=bar")).GET().build();
         ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
         Exchange<byte[]> exchange = Exchange.createHttpRequestExchange(consume, handler);
         Response<byte[]> response = exchange.response();
         byte[] body = response.body();
-        log.trace("body [{}]: {}", response.statusCode(), new String(body));
+        log.trace("GET body [{}]: {}", response.statusCode(), new String(body));
+    }
+
+    @Test
+    public void testHttpConsumer() throws Exception {
+        Client client = Client.create();
+        Request consume = Request.builder(server.baseURL("/dump?foo=bar")).POST(RequestBodyProcessor.fromString("foo=bar")).header("foo", "bar").build();
+        ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
+        Exchange<byte[]> exchange = Exchange.createHttpRequestExchange(consume, handler);
+        Response<byte[]> response = exchange.response();
+        byte[] body = response.body();
+        log.trace("POST body [{}]: {}", response.statusCode(), new String(body));
 
         /*
             Exchange.request(BodyHandler)

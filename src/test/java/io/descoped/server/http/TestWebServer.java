@@ -1,5 +1,6 @@
 package io.descoped.server.http;
 
+import io.descoped.info.InfoBuilder;
 import io.undertow.Undertow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,18 +8,19 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
-public class WebServer {
+public class TestWebServer {
 
-    private static final Logger log = LoggerFactory.getLogger(WebServer.class);
+    private static final Logger log = LoggerFactory.getLogger(TestWebServer.class);
     private static final long SLEEP_TIMEOUT = 20000L;
 
     private final WebServerHandler handler;
     private Undertow server;
     private String host = "localhost";
-    private int port;
+    private int port = -1;
 
     public static void sleep() {
         sleep(null);
@@ -32,17 +34,31 @@ public class WebServer {
         }
     }
 
-    public WebServer() {
+    public TestWebServer() {
+        handler = new WebServerHandler();
+    }
+
+    public TestWebServer(String host, int port) {
+        this.host = host;
+        this.port = port;
         handler = new WebServerHandler();
     }
 
     public void start() throws Exception {
-        port = new Random().nextInt(500) + 9000;
+        port = (port == -1 ? new Random().nextInt(500) + 9000 : port);
         server = Undertow.builder()
                 .addHttpListener(port, host)
                 .setHandler(handler).build();
         server.start();
-        log.info("WebServer is listening on {}", baseURL());
+        InfoBuilder infoBuilder = InfoBuilder.builder();
+        infoBuilder.key("endpoints");
+        int n = 0;
+        for(Map.Entry<String, Route> e : handler.getRoutes().entrySet()) {
+            infoBuilder.keyValue("context"+n, e.getKey());
+            n++;
+        }
+        infoBuilder.up();
+        log.info("TestWebServer is listening on {}\n{}", baseURL(), infoBuilder.build());
     }
 
     public void stop() throws Exception {
@@ -60,6 +76,10 @@ public class WebServer {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public URI baseURL(String uri) {
+        return URI.create(baseURL(URI.create(uri)));
     }
 
     public void addRoute(String contextPath, Route route) {

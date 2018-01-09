@@ -60,6 +60,10 @@ public class RequestBuilderImpl implements RequestBuilder {
         return this;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
     @Override
     public RequestBuilder GET() {
         return method("GET", null);

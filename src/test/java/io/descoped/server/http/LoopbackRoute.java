@@ -64,7 +64,7 @@ public class LoopbackRoute implements Route {
             infoBuilder.up();
         }
 
-        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+        exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
 
         {
             infoBuilder.key("response-headers");

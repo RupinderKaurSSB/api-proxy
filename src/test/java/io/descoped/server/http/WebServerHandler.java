@@ -14,6 +14,10 @@ public class WebServerHandler implements HttpHandler {
         routes.put(contextPath, route);
     }
 
+    public Map<String, Route> getRoutes() {
+        return routes;
+    }
+
     @Override
     public void handleRequest(HttpServerExchange exchange) throws Exception {
         String contextPath = exchange.getRequestURI();
