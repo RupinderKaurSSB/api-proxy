@@ -12,19 +12,19 @@ import static java.util.Objects.requireNonNull;
 
 public class RequestBuilderImpl implements RequestBuilder {
 
-    private final HeadersImpl httpHeaders;
+    private final HeadersImpl headers;
     private URI uri;
     private String method;
     private RequestBodyProcessor body;
     private Duration duration;
 
     public RequestBuilderImpl(URI uri) {
-        httpHeaders = new HeadersImpl();
+        headers = new HeadersImpl();
         this.uri = uri;
     }
 
     public Headers getHeaders() {
-        return httpHeaders;
+        return headers;
     }
 
     public URI getUri() {
@@ -47,7 +47,7 @@ public class RequestBuilderImpl implements RequestBuilder {
 
     @Override
     public RequestBuilder header(String name, String value) {
-        httpHeaders.addHeader(name, value);
+        headers.addHeader(name, value);
         return this;
     }
 

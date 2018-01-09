@@ -25,7 +25,7 @@ public class PostenPostalCodesClient {
 
     private static final Logger log = LoggerFactory.getLogger(PostenPostalCodesClient.class);
     protected static String SAFE_SPLIT_TABBED_REGEXP = "\t(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
-    private static String POSTEN_URL = "https://www.bring.no/radgivning/sende-noe/adressetjenester/postnummer/_/attachment/download/7f0186f6-cf90-4657-8b5b-70707abeb789:67718627ac597c2e3aaf0cac77b2ce3e1fa1b641/postnummerregister-ansi.txt";
+    private static String POSTEN_URL = "https://www.bring.no/postnummerregister-ansi.txt";
     private Map<String, PostalCode> internalMap = new LinkedHashMap<>();
 
     public PostenPostalCodesClient() {

@@ -13,6 +13,10 @@ public interface RequestBodyProcessor {
 
     long contentLength();
 
+    static RequestBodyProcessor noBody() {
+        return new RequestProcessors.EmptyProcessor();
+    }
+
     static RequestBodyProcessor fromString(String body) {
         return fromString(body, StandardCharsets.UTF_8);
     }

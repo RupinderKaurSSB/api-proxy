@@ -6,6 +6,7 @@ package io.descoped.client.external.posten;
  */
 public enum NorwayCounty {
 
+    F00("Unknown"),
     F01("Østfold"),
     F02("Akershus"),
     F03("Oslo"),
@@ -27,7 +28,8 @@ public enum NorwayCounty {
     F20("Finnmark"),
     F21("Svalbard"),
     F22("Jan Mayen"),
-    F23("Kontinentalsokkelen");
+    F23("Kontinentalsokkelen"),
+    F50("Trøndelag");
 
     private String description;
 
@@ -40,8 +42,12 @@ public enum NorwayCounty {
     }
 
     public static NorwayCounty asEnum(String communeCode) {
-        String code = "F" + communeCode.substring(0,2);
-        return valueOf(code);
+        try {
+            String code = "F" + communeCode.substring(0, 2);
+            return valueOf(code);
+        } catch (Exception e) {
+            return valueOf("F00");
+        }
     }
 
     @Override

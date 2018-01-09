@@ -63,6 +63,7 @@ public class TestWebServer {
 
     public void stop() throws Exception {
         server.stop();
+        port = -1;
     }
 
     public String baseURL() {
