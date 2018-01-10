@@ -17,7 +17,9 @@ public interface ResponseBodyHandler<T> {
     ResponseBodyProcessor<T> apply(int statusCode, Headers responseHeaders);
 
     static ResponseBodyHandler<byte[]> asBytes() {
-        ResponseBodyHandler<byte[]> handler = (statusCode, responseHeaders) -> new ResponseProcessors.ByteArrayProcessor<>(bytes -> bytes);
+        ResponseBodyHandler<byte[]> handler = (statusCode, responseHeaders) -> {
+            return new ResponseProcessors.ByteArrayProcessor<>(bytes -> bytes);
+        };
         return handler;
     }
 

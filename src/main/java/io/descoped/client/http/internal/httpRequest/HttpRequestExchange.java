@@ -53,12 +53,15 @@ public class HttpRequestExchange<T> implements Exchange<T> {
 
         Headers responseHeaders = new HeadersImpl(responseHeadersMap);
         ResponseBodyProcessor<T> result = responseBodyHandler.apply(statusCode, responseHeaders);
-        ResponseProcessors.AbstractProcessor abstractProcessor = (ResponseProcessors.AbstractProcessor) result;
-        abstractProcessor.open();
-        abstractProcessor.write(req.bytes());
-        abstractProcessor.complete();
-        ResponseImpl<T> response = new ResponseImpl<T>(consumeImpl, statusCode, responseHeaders, result.getBody(), this);
-        return response;
+        if (result != null) {
+            ResponseProcessors.AbstractProcessor abstractProcessor = (ResponseProcessors.AbstractProcessor) result;
+            abstractProcessor.open();
+            abstractProcessor.write(req.bytes());
+            abstractProcessor.complete();
+            ResponseImpl<T> response = new ResponseImpl<T>(consumeImpl, statusCode, responseHeaders, result.getBody(), this);
+            return response;
+        }
+        return null;
     }
 
 }

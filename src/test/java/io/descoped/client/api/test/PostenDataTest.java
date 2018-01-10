@@ -39,12 +39,14 @@ public class PostenDataTest {
         server = new TestWebServer();
         server.addRoute("/transform", exchange -> {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
+
             Deque<String> code = exchange.getQueryParameters().get("code");
             InfoBuilder builder = InfoBuilder.builder();
             Integer val = Integer.valueOf(code.getFirst()) + 10000;
             builder.keyValue("ssbCode", val.toString());
             builder.keyValue("serverPort", getPort());
             builder.up();
+
             exchange.getResponseSender().send(builder.build());
         });
         server.start();
@@ -87,18 +89,17 @@ public class PostenDataTest {
         // Log
         Map<String, PostalCode> postalCodeMap = response.body();
         for (PostalCode entry : postalCodeMap.values()) {
-//            log.trace("{}\t{}\t{}\t{}\t{}\t{}",
-//                    entry.getCode(),
-//                    entry.getPlace(),
-//                    entry.getCommuneCode(),
-//                    entry.getCommuneName(),
-//                    entry.getCounty(),
-//                    (false ? entry.getCategory().toString() : entry.getCategory().getDescription())
-//            );
-
+            log.trace("{}\t{}\t{}\t{}\t{}\t{}",
+                    entry.getCode(),
+                    entry.getPlace(),
+                    entry.getCommuneCode(),
+                    entry.getCommuneName(),
+                    entry.getCounty(),
+                    (true ? entry.getCategory().toString() : entry.getCategory().getDescription())
+            );
         }
 
-        log.trace("Transformed {} instances!", postalCodeMap.size());
+        log.trace("Count: {}", count);
     }
 
 }

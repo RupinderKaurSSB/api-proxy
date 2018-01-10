@@ -1,5 +1,6 @@
 package io.descoped.client.http.internal;
 
+import io.descoped.client.exception.APIClientException;
 import io.descoped.client.http.Headers;
 import io.descoped.client.http.ResponseBodyProcessor;
 
@@ -135,7 +136,7 @@ public class ResponseProcessors {
 
         @Override
         public void error() {
-            throw new RuntimeException();
+            throw new APIClientException();
         }
 
         @Override

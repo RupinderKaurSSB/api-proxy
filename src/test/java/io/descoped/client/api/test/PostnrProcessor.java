@@ -28,16 +28,17 @@ public class PostnrProcessor<T> implements ResponseBodyHandler<Map<String, Posta
         this.testServer = server;
     }
 
-    private Response<byte[]> testServerLookup(String code) {
+    public Response<byte[]> GET(String code) {
         Request request = Request.builder(testServer.baseURL("/transform?code="+code)).GET().build();
         Response<byte[]> response = Client.create().send​(request, ResponseBodyHandler.asBytes());
         return response;
     }
 
+
     @Override
     public ResponseBodyProcessor<Map<String, PostalCode>> apply(int statusCode, Headers responseHeaders) {
-        return new ResponseProcessors.ByteArrayProcessor<>((_bytes) -> {
-
+//        return HandlerHelper.handle(statusCode, responseHeaders, new ResponseProcessors.ByteArrayProcessor<Map<String, PostalCode>>((_bytes) -> {
+        return new ResponseProcessors.ByteArrayProcessor<Map<String, PostalCode>>((_bytes) -> {
             Map<String, PostalCode> internalMap = new LinkedHashMap<>();
             try {
                 byte[] bytes = new String(_bytes, "Cp1252").getBytes();
@@ -46,10 +47,9 @@ public class PostnrProcessor<T> implements ResponseBodyHandler<Map<String, Posta
                 while ((rowLine = br.readLine()) != null) {
                     PostalCode postalCode = PostalCode.valueOf(rowLine);
                     internalMap.put(postalCode.getCode(), postalCode);
-                    Response<byte[]> bytesResponse = testServerLookup(postalCode.getCode());
-                    log.trace("was: {} -- transformed: {}", postalCode.getCode(), new String(bytesResponse.body()));
+//                    log.trace("was: {} -- transformed: {}", postalCode.getCode(), new String(GET(postalCode.getCode()).body()));
+                    PostenDataTest.inc();
                 }
-                PostenDataTest.inc();
 
             } catch (UnsupportedEncodingException e) {
                 throw new RuntimeException(e);
@@ -59,7 +59,6 @@ public class PostnrProcessor<T> implements ResponseBodyHandler<Map<String, Posta
 
             return internalMap;
         });
-
     }
 
 }
