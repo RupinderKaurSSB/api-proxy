@@ -5,7 +5,7 @@ import io.descoped.client.http.Client;
 import io.descoped.client.http.Request;
 import io.descoped.client.http.Response;
 import io.descoped.client.http.ResponseBodyHandler;
-import io.descoped.info.InfoBuilder;
+import io.descoped.info.JsonBuilder;
 import io.descoped.server.http.TestWebServer;
 import io.undertow.util.Headers;
 import org.junit.After;
@@ -41,7 +41,7 @@ public class PostenDataTest {
             exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "application/json");
 
             Deque<String> code = exchange.getQueryParameters().get("code");
-            InfoBuilder builder = InfoBuilder.builder();
+            JsonBuilder builder = JsonBuilder.builder();
             Integer val = Integer.valueOf(code.getFirst()) + 10000;
             builder.keyValue("ssbCode", val.toString());
             builder.keyValue("serverPort", getPort());

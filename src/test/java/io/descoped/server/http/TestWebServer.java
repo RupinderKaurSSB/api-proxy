@@ -1,6 +1,6 @@
 package io.descoped.server.http;
 
-import io.descoped.info.InfoBuilder;
+import io.descoped.info.JsonBuilder;
 import io.undertow.Undertow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,15 +50,15 @@ public class TestWebServer {
                 .addHttpListener(port, host)
                 .setHandler(handler).build();
         server.start();
-        InfoBuilder infoBuilder = InfoBuilder.builder();
-        infoBuilder.key("endpoints");
+        JsonBuilder jsonBuilder = JsonBuilder.builder();
+        jsonBuilder.key("endpoints");
         int n = 0;
         for(Map.Entry<String, Route> e : handler.getRoutes().entrySet()) {
-            infoBuilder.keyValue("context"+n, e.getKey());
+            jsonBuilder.keyValue("context"+n, e.getKey());
             n++;
         }
-        infoBuilder.up();
-        log.info("TestWebServer is listening on {}\n{}", baseURL(), infoBuilder.build());
+        jsonBuilder.up();
+        log.info("TestWebServer is listening on {}\n{}", baseURL(), jsonBuilder.build());
     }
 
     public void stop() throws Exception {
