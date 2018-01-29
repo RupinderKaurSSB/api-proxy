@@ -14,17 +14,13 @@ public class HeadersImpl implements Headers {
 
     public HeadersImpl(Map<String, List<String>> mapHeaders) {
         this();
-        if (false) {
-            Map<String, List<String>> map = new TreeMap<>();
-            int n = 0;
-            for (Map.Entry<String, List<String>> e : mapHeaders.entrySet()) {
-                if (n == 0) {
-                    n++;
-                    continue;
-                }
-                headers.put(e.getKey(), e.getValue());
+        int n = 0;
+        for (Map.Entry<String, List<String>> e : mapHeaders.entrySet()) {
+            if (n == 0) {
+                n++;
+                continue;
             }
-//        headers.putAll(Optional.ofNullable(mapHeaders).orElse(new TreeMap<String, List<String>>()));
+            headers.put(e.getKey(), e.getValue());
         }
     }
 
@@ -66,4 +62,12 @@ public class HeadersImpl implements Headers {
         headers.put(name, values);
     }
 
+    public static Map<String,String> asFlatMap(Map<String, List<String>> headers) {
+        Map<String,String> headerMap = new HashMap<>();
+        for(Map.Entry<String,List<String>> entry : headers.entrySet()) {
+            String value = (entry.getValue().size() == 1 ? entry.getValue().get(0) : Arrays.asList(entry.getValue()).toString());
+            headerMap.put(entry.getKey(), value);
+        }
+        return headerMap;
+    }
 }

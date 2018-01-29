@@ -6,6 +6,7 @@ import com.jayway.jsonpath.JsonPath;
 import io.descoped.client.api.config.Configuration;
 import io.descoped.client.external.facebook.FacebookClient;
 import net.minidev.json.JSONArray;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ public class FacebookClientTest {
     private static final Logger log = LoggerFactory.getLogger(FacebookClientTest.class);
 
     @Test
+    @Ignore
     public void should_get_graph_user_me() throws Exception {
         assertThat(Configuration.getDeveloperAccessToken()).isNotBlank();
 
@@ -41,6 +43,7 @@ public class FacebookClientTest {
     }
 
     @Test
+    @Ignore
     public void should_get_graph_pages_for_getoLoc() throws Exception {
         FacebookClient client = new FacebookClient();
         String payload = client.getPageList("live music", 59.9138688, 10.7522454, 5000);
