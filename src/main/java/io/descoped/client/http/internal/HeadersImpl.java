@@ -14,13 +14,10 @@ public class HeadersImpl implements Headers {
 
     public HeadersImpl(Map<String, List<String>> mapHeaders) {
         this();
-        int n = 0;
         for (Map.Entry<String, List<String>> e : mapHeaders.entrySet()) {
-            if (n == 0) {
-                n++;
-                continue;
+            if (e.getKey() != null) {
+                headers.put(e.getKey(), e.getValue());
             }
-            headers.put(e.getKey(), e.getValue());
         }
     }
 
