@@ -42,7 +42,7 @@ public class ResponseBodyTest {
         byteArrayProcessor.write(a1);
         byteArrayProcessor.write(a2);
         byteArrayProcessor.complete();
-        byte[] s = byteArrayProcessor.getBody();
+        byte[] s = byteArrayProcessor.getBody().get();
 
         log.trace("s: {}", s);
     }
@@ -57,7 +57,7 @@ public class ResponseBodyTest {
         byteArrayProcessor.write(a1);
         byteArrayProcessor.write(a2);
         byteArrayProcessor.complete();
-        String s = byteArrayProcessor.getBody();
+        String s = byteArrayProcessor.getBody().get();
 
         log.trace("s: {}", s);
 

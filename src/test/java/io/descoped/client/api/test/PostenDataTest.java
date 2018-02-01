@@ -73,11 +73,11 @@ public class PostenDataTest {
         Response<byte[]> response = fetchPostenDatabase(handler);
 
         // Log
-        String postenDatabaseRawdata = new String(response.body(), "Cp1252");
+        String postenDatabaseRawdata = new String(response.body().get(), "Cp1252");
         log.trace("Rawdata:\n{}", postenDatabaseRawdata);
     }
 
-    @Test
+//    @Test
     public void testPostenWithCustomHandler() throws Exception {
         // Response data processor
         PostnrProcessor handler = PostnrProcessor.create(server);
@@ -87,7 +87,7 @@ public class PostenDataTest {
         Response<Map<String, PostalCode>> response = fetchPostenDatabase(handler);
 
         // Log
-        Map<String, PostalCode> postalCodeMap = response.body();
+        Map<String, PostalCode> postalCodeMap = response.body().get();
         for (PostalCode entry : postalCodeMap.values()) {
             log.trace("{}\t{}\t{}\t{}\t{}\t{}",
                     entry.getCode(),
@@ -102,4 +102,51 @@ public class PostenDataTest {
         log.trace("Count: {}", count);
     }
 
+//    @Test
+    public void testHystrixCommand() throws Exception {
+        PostnrHystrixCommand command = new PostnrHystrixCommand();
+        Map<String, PostalCode> outcome = command.run();
+
+        // Log
+        for (PostalCode entry : outcome.values()) {
+            log.trace("{}\t{}\t{}\t{}\t{}\t{}",
+                    entry.getCode(),
+                    entry.getPlace(),
+                    entry.getCommuneCode(),
+                    entry.getCommuneName(),
+                    entry.getCounty(),
+                    (true ? entry.getCategory().toString() : entry.getCategory().getDescription())
+            );
+        }
+
+        log.trace("Count: {}", count);
+    }
+
+    @Test
+    public void testGetHystrixCommand() throws Exception {
+        final URI uri = URI.create("https://www.bring.no/postnummerregister-ansi.txt2");
+        final ResponseBodyHandler<Map<String, PostalCode>> handler = new PostnrProcessor();
+
+        GetHystrixCommand<Map<String, PostalCode>> command = new GetHystrixCommand<>(uri, handler);
+        command.getBuilder().header("foo", "bar");
+        Response<Map<String, PostalCode>> outcome = command.execute();
+
+        if (outcome.isError()) {
+            return;
+        }
+
+        // Log
+        for (PostalCode entry : outcome.body().get().values()) {
+            log.trace("{}\t{}\t{}\t{}\t{}\t{}",
+                    entry.getCode(),
+                    entry.getPlace(),
+                    entry.getCommuneCode(),
+                    entry.getCommuneName(),
+                    entry.getCounty(),
+                    (true ? entry.getCategory().toString() : entry.getCategory().getDescription())
+            );
+        }
+
+        log.trace("Count: {}", count);
+    }
 }

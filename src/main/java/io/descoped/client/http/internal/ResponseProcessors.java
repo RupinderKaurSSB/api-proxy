@@ -1,6 +1,5 @@
 package io.descoped.client.http.internal;
 
-import io.descoped.client.exception.APIClientException;
 import io.descoped.client.http.Headers;
 import io.descoped.client.http.ResponseBodyProcessor;
 
@@ -23,8 +22,6 @@ public class ResponseProcessors {
         public abstract void open();
 
         public abstract void write(byte[] bytes);
-
-        public abstract void error();
 
         public abstract void complete();
     }
@@ -98,18 +95,13 @@ public class ResponseProcessors {
         }
 
         @Override
-        public void error() {
-            throw new RuntimeException();
-        }
-
-        @Override
         public void complete() {
             close(out);
         }
 
         @Override
-        public Path getBody() {
-            return file;
+        public Optional<Path> getBody() {
+            return Optional.of(file);
         }
     }
 
@@ -135,19 +127,14 @@ public class ResponseProcessors {
 
 
         @Override
-        public void error() {
-            throw new APIClientException();
-        }
-
-        @Override
         public void complete() {
             result = finisher.apply(join(received));
             received.clear();
         }
 
         @Override
-        public T getBody() {
-            return result;
+        public Optional<T> getBody() {
+            return Optional.ofNullable(result);
         }
 
     }

@@ -20,6 +20,6 @@ public class KlassClient {
         Request req = Request.builder(URI.create(KLASS_URL)).GET().build();
         ResponseBodyHandler<String> handler = ResponseBodyHandler.asString();
         Response<String> response = Client.create().send​(req, handler);
-        return response.body();
+        return response.body().get();
     }
 }

@@ -1,5 +1,6 @@
 package io.descoped.client.api.test;
 
+import io.descoped.client.exception.APIClientException;
 import io.descoped.client.external.posten.PostalCode;
 import io.descoped.client.http.*;
 import io.descoped.client.http.internal.ResponseProcessors;
@@ -52,9 +53,9 @@ public class PostnrProcessor<T> implements ResponseBodyHandler<Map<String, Posta
                 }
 
             } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
+                throw new APIClientException(e);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new APIClientException(e);
             }
 
             return internalMap;

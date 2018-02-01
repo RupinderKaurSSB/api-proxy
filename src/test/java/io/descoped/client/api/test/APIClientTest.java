@@ -90,7 +90,7 @@ public class APIClientTest {
         ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
         Exchange<byte[]> exchange = Exchange.createHttpRequestExchange(consume, handler);
         Response<byte[]> response = exchange.response();
-        byte[] body = response.body();
+        byte[] body = response.body().get();
         log.trace("GET body [{}]: {}", response.statusCode(), new String(body));
     }
 
@@ -101,7 +101,7 @@ public class APIClientTest {
         ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
         Exchange<byte[]> exchange = Exchange.createHttpRequestExchange(consume, handler);
         Response<byte[]> response = exchange.response();
-        byte[] body = response.body();
+        byte[] body = response.body().get();
         log.trace("POST body [{}]: {}", response.statusCode(), new String(body));
 
         /*

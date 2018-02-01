@@ -1,6 +1,7 @@
 package io.descoped.client.http;
 
 import java.net.URI;
+import java.util.Optional;
 
 public interface Response<T> {
 
@@ -33,7 +34,7 @@ public interface Response<T> {
      *
      * @return the body
      */
-    T body();
+    Optional<T> body();
 
     /**
      * Returns the {@code URI} that the response was received from. This may be
@@ -43,4 +44,9 @@ public interface Response<T> {
      */
     public abstract URI uri();
 
+    boolean isError();
+
+    Exception getError();
+
 }
+

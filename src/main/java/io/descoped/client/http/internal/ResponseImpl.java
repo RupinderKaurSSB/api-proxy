@@ -6,20 +6,22 @@ import io.descoped.client.http.Response;
 import io.descoped.client.http.internal.httpRequest.HttpRequestExchange;
 
 import java.net.URI;
+import java.util.Optional;
 
 public class ResponseImpl<T> implements Response<T> {
 
-    final int responseCode;
-    final HttpRequestExchange<T> exchange;
-    final RequestImpl initialRequest;
-    final Headers headers;
-    final URI uri;
-    final T body;
+    private final int responseCode;
+    private final HttpRequestExchange<T> exchange;
+    private final RequestImpl initialRequest;
+    private final Headers headers;
+    private final URI uri;
+    private final Optional<T> body;
+    private Exception error;
 
     public ResponseImpl(Request initialRequest,
                         int statusCode,
                         Headers responseHeaders,
-                        T body, HttpRequestExchange<T> exch) {
+                        Optional<T> body, HttpRequestExchange<T> exch) {
         this.responseCode = statusCode;
         this.exchange = exch;
         this.initialRequest = (RequestImpl) initialRequest;
@@ -44,12 +46,31 @@ public class ResponseImpl<T> implements Response<T> {
     }
 
     @Override
-    public T body() {
+    public Optional<T> body() {
         return body;
     }
 
     @Override
     public URI uri() {
         return uri;
+    }
+
+    @Override
+    public boolean isError() {
+        return error != null;
+    }
+
+    public void setError(Exception error) {
+        this.error = error;
+    }
+
+
+    @Override
+    public Exception getError() {
+        return error;
+    }
+
+    public HttpRequestExchange<T> getExchange() {
+        return exchange;
     }
 }

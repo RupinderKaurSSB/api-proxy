@@ -1,5 +1,7 @@
 package io.descoped.client.http;
 
+import java.util.Optional;
+
 public interface ResponseBodyProcessor<T> {
 
     /**
@@ -7,6 +9,6 @@ public interface ResponseBodyProcessor<T> {
      *
      * @return a body object
      */
-    T getBody();
+    Optional<T> getBody();
 
 }
