@@ -18,6 +18,8 @@ import java.net.URI;
 import java.util.Deque;
 import java.util.Map;
 
+import static java.net.HttpURLConnection.HTTP_OK;
+
 public class PostenDataTest {
 
     private static final Logger log = LoggerFactory.getLogger(PostenDataTest.class);
@@ -122,6 +124,7 @@ public class PostenDataTest {
         log.trace("Count: {}", count);
     }
 
+
     @Test
     public void testGetHystrixCommand() throws Exception {
         final URI uri = URI.create("https://www.bring.no/postnummerregister-ansi.txt2");
@@ -131,7 +134,10 @@ public class PostenDataTest {
         command.getBuilder().header("foo", "bar");
         Response<Map<String, PostalCode>> outcome = command.execute();
 
-        if (outcome.isError()) {
+        log.trace("Outcome Body present?: {}", outcome.body().isPresent());
+
+        if (outcome.statusCode() != HTTP_OK || outcome.isError()) {
+            log.trace("Hystrix StatusCode: {}", outcome.statusCode());
             return;
         }
 
@@ -149,4 +155,5 @@ public class PostenDataTest {
 
         log.trace("Count: {}", count);
     }
+
 }

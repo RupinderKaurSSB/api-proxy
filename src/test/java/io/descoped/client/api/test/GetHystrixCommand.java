@@ -1,9 +1,6 @@
 package io.descoped.client.api.test;
 
 import com.netflix.hystrix.HystrixCommand;
-import com.netflix.hystrix.HystrixCommandGroupKey;
-import com.netflix.hystrix.HystrixCommandProperties;
-import com.netflix.hystrix.HystrixThreadPoolProperties;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
 import io.descoped.client.http.*;
 import io.descoped.client.http.internal.ResponseImpl;
@@ -24,15 +21,7 @@ public class GetHystrixCommand<R> extends HystrixCommand<Response<R>> {
     private Response<R> response = null;
 
     protected GetHystrixCommand(URI uri, ResponseBodyHandler<R> handler) {
-        super(HystrixCommand.Setter
-                .withGroupKey(HystrixCommandGroupKey.Factory.asKey("OperationCommand"))
-                .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
-                        .withExecutionTimeoutInMilliseconds(300000))
-                .andThreadPoolPropertiesDefaults(
-                        HystrixThreadPoolProperties.Setter()
-                                .withMaxQueueSize(100)
-                                .withQueueSizeRejectionThreshold(100)
-                                .withCoreSize(4)));
+        super(HystrixSetter.setterCircuitBreaker());
         this.uri = uri;
         this.builder = Request.builder(uri).GET();
         this.handler = handler;
@@ -54,8 +43,7 @@ public class GetHystrixCommand<R> extends HystrixCommand<Response<R>> {
     @Override
     protected Response<R> getFallback() {
         HttpRequestExchange exch = ((ResponseImpl) response).getExchange();
-        log.error("Error: [{}] {}\n{}", response.statusCode(), exch.getErrorMessage(), exch.getErrorBody() );
-//        ResponseBodyProcessor<R> r = handler.apply(response.statusCode(), response.headers());
+        log.error("Hystrix Fallback Error: [{}] {}", response.statusCode(), exch.getErrorMessage() );
         return response;
     }
 }
