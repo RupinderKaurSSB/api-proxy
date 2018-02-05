@@ -104,7 +104,7 @@ public class PostenDataTest {
         log.trace("Count: {}", count);
     }
 
-//    @Test
+    @Test
     public void testHystrixCommand() throws Exception {
         PostnrHystrixCommand command = new PostnrHystrixCommand();
         Map<String, PostalCode> outcome = command.run();
@@ -125,7 +125,7 @@ public class PostenDataTest {
     }
 
 
-    @Test
+//    @Test
     public void testGetHystrixCommand() throws Exception {
         final URI uri = URI.create("https://www.bring.no/postnummerregister-ansi.txt2");
         final ResponseBodyHandler<Map<String, PostalCode>> handler = new PostnrProcessor();
