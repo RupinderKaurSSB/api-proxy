@@ -67,6 +67,11 @@ public class HttpRequestExchange<T> implements Exchange<T> {
         httpRequest.headers(userHeaders);
         log.info("----> {}", userHeaders);
 
+        // send request processor if assigned
+        if (requestImpl.hasRequestProcessor()) {
+            httpRequest.send(requestImpl.getRequestProcessor().body());
+        }
+
 
         int statusCode = httpRequest.code();
 
@@ -81,7 +86,7 @@ public class HttpRequestExchange<T> implements Exchange<T> {
         if (result != null) {
             ResponseProcessors.AbstractProcessor abstractProcessor = (ResponseProcessors.AbstractProcessor) result;
             abstractProcessor.open();
-            byte[] bytes = httpRequest.bytes();
+            byte[] bytes = httpRequest.bytes(); // read payload
             abstractProcessor.write(bytes);
             try {
                 abstractProcessor.complete();

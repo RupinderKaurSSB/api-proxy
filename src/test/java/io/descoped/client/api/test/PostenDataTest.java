@@ -79,7 +79,7 @@ public class PostenDataTest {
         log.trace("Rawdata:\n{}", postenDatabaseRawdata);
     }
 
-//    @Test
+    @Test
     public void testPostenWithCustomHandler() throws Exception {
         // Response data processor
         PostnrProcessor handler = PostnrProcessor.create(server);
@@ -104,7 +104,7 @@ public class PostenDataTest {
         log.trace("Count: {}", count);
     }
 
-    @Test
+//    @Test
     public void testHystrixCommand() throws Exception {
         PostnrHystrixCommand command = new PostnrHystrixCommand();
         Map<String, PostalCode> outcome = command.run();

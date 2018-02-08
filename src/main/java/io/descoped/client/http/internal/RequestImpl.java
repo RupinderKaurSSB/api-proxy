@@ -48,6 +48,10 @@ public class RequestImpl implements Request {
         return secure;
     }
 
+    public boolean hasRequestProcessor() {
+        return requestProcessor != null;
+    }
+
     public RequestBodyProcessor getRequestProcessor() {
         return requestProcessor;
     }
