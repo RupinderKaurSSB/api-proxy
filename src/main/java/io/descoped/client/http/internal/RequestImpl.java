@@ -49,7 +49,7 @@ public class RequestImpl implements Request {
     }
 
     public boolean hasRequestProcessor() {
-        return requestProcessor != null;
+        return !(requestProcessor instanceof RequestProcessors.EmptyProcessor);
     }
 
     public RequestBodyProcessor getRequestProcessor() {
