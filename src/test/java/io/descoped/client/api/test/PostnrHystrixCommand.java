@@ -33,7 +33,7 @@ public class PostnrHystrixCommand extends HystrixCommand<Map<String,PostalCode>>
     @Override
     protected Map<String, PostalCode> run() throws Exception {
         Request request = Request.builder(URI.create("https://www.bring.no/postnummerregister-ansi.txt")).GET().build();
-        ResponseBodyHandler<Map<String, PostalCode>> handler = new PostnrProcessor();
+        ResponseBodyHandler<Map<String, PostalCode>> handler = new PostnrHandler();
         Response<Map<String,PostalCode>> response = Client.create().send​(request, handler);
         return response.body().get();
     }

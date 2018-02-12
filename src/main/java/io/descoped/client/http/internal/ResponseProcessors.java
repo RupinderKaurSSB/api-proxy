@@ -1,5 +1,6 @@
 package io.descoped.client.http.internal;
 
+import io.descoped.client.exception.APIClientException;
 import io.descoped.client.http.Headers;
 import io.descoped.client.http.ResponseBodyProcessor;
 
@@ -19,11 +20,24 @@ import java.util.function.Function;
 public class ResponseProcessors {
 
     public static abstract class AbstractProcessor<T> implements ResponseBodyProcessor<T> {
+
         public abstract void open();
 
         public abstract void write(byte[] bytes);
 
         public abstract void complete();
+
+        @Deprecated
+        public static <T> T empty(Class<T> clazz) {
+            try {
+                return clazz.newInstance();
+            } catch (InstantiationException e) {
+                throw new APIClientException(e);
+            } catch (IllegalAccessException e) {
+                throw new APIClientException(e);
+            }
+        }
+
     }
 
     public static int remaining(List<ByteBuffer> bufs) {
@@ -105,13 +119,20 @@ public class ResponseProcessors {
         }
     }
 
+    interface Foo<R,V,T> {
+        T apply(R v1 ,V t1);
+    }
 
     public static class ByteArrayProcessor<T> extends AbstractProcessor<T> {
+        Foo<byte[], Integer, T> foo;
         private Function<byte[], T> finisher;
         private List<ByteBuffer> received;
         private T result;
 
         public ByteArrayProcessor(Function<byte[], T> finisher) {
+//            foo = (v1, t1) -> {
+//                result new byte[0];
+//            }
             this.finisher = finisher;
         }
 

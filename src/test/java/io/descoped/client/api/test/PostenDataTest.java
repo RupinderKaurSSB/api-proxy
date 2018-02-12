@@ -82,7 +82,7 @@ public class PostenDataTest {
     @Test
     public void testPostenWithCustomHandler() throws Exception {
         // Response data processor
-        PostnrProcessor handler = PostnrProcessor.create(server);
+        PostnrHandler handler = PostnrHandler.create(server);
 
 
         // Fetch
@@ -128,7 +128,7 @@ public class PostenDataTest {
 //    @Test
     public void testGetHystrixCommand() throws Exception {
         final URI uri = URI.create("https://www.bring.no/postnummerregister-ansi.txt2");
-        final ResponseBodyHandler<Map<String, PostalCode>> handler = new PostnrProcessor();
+        final ResponseBodyHandler<Map<String, PostalCode>> handler = new PostnrHandler();
 
         GetHystrixCommand<Map<String, PostalCode>> command = new GetHystrixCommand<>(uri, handler);
         command.getBuilder().header("foo", "bar");

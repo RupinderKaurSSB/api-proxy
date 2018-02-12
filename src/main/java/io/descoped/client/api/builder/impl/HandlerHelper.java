@@ -11,9 +11,13 @@ public class HandlerHelper {
 
     public static class ErrorProcessor<T> extends ResponseProcessors.ByteArrayProcessor<T> {
         public ErrorProcessor(int statusCode, Headers responseHeaders) {
-            super(bytes -> (T) new byte[0]);
+            super(ErrorProcessor::apply);
             open();
             write(Integer.valueOf(statusCode).toString().getBytes());
+        }
+
+        public static <T> T apply(byte[] bytes) {
+            return (T) new byte[0];
         }
     }
 

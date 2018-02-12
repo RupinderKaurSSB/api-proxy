@@ -50,7 +50,7 @@ public class OperationCommand extends HystrixCommand<OutcomeHandler> {
 
     @Override
     protected OutcomeHandler getFallback() {
-        log.error(error);;
+        log.error(error);
         return null;
     }
 }
