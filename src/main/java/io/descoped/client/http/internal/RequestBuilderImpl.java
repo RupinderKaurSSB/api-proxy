@@ -2,8 +2,8 @@ package io.descoped.client.http.internal;
 
 import io.descoped.client.http.Headers;
 import io.descoped.client.http.Request;
-import io.descoped.client.http.RequestBodyProcessor;
 import io.descoped.client.http.RequestBuilder;
+import io.descoped.client.http.RequestProcessor;
 
 import java.net.URI;
 import java.time.Duration;
@@ -15,7 +15,7 @@ public class RequestBuilderImpl implements RequestBuilder {
     private final HeadersImpl headers;
     private URI uri;
     private String method;
-    private RequestBodyProcessor body;
+    private RequestProcessor body;
     private Duration duration;
 
     public RequestBuilderImpl(URI uri) {
@@ -35,7 +35,7 @@ public class RequestBuilderImpl implements RequestBuilder {
         return method;
     }
 
-    public RequestBodyProcessor getBody() {
+    public RequestProcessor getBody() {
         return body;
     }
 
@@ -70,21 +70,21 @@ public class RequestBuilderImpl implements RequestBuilder {
     }
 
     @Override
-    public RequestBuilder POST(RequestBodyProcessor body) {
+    public RequestBuilder POST(RequestProcessor body) {
         return method("POST", body);
     }
 
     @Override
-    public RequestBuilder DELETE(RequestBodyProcessor body) {
+    public RequestBuilder DELETE(RequestProcessor body) {
         return method("DELETE", body);
     }
 
     @Override
-    public RequestBuilder PUT(RequestBodyProcessor body) {
+    public RequestBuilder PUT(RequestProcessor body) {
         return method("PUT", body);
     }
 
-    private RequestBuilder method(String method, RequestBodyProcessor body) {
+    private RequestBuilder method(String method, RequestProcessor body) {
         this.method = requireNonNull(method);
         this.body = body;
         return this;

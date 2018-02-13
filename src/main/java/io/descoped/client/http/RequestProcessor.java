@@ -7,33 +7,33 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-public interface RequestBodyProcessor {
+public interface RequestProcessor {
 
     byte[] body();
 
     long contentLength();
 
-    static RequestBodyProcessor noBody() {
+    static RequestProcessor noBody() {
         return new RequestProcessors.EmptyProcessor();
     }
 
-    static RequestBodyProcessor fromString(String body) {
+    static RequestProcessor fromString(String body) {
         return fromString(body, StandardCharsets.UTF_8);
     }
 
-    static RequestBodyProcessor fromString(String body, Charset charset) {
+    static RequestProcessor fromString(String body, Charset charset) {
         return new RequestProcessors.StringProcessor(body, charset);
     }
 
-    static RequestBodyProcessor fromByteArray(byte[] bytes) {
+    static RequestProcessor fromByteArray(byte[] bytes) {
         return new RequestProcessors.ByteArrayProcessor(bytes);
     }
 
-    static RequestBodyProcessor fromInputStream(InputStream inputStream) {
+    static RequestProcessor fromInputStream(InputStream inputStream) {
         return new RequestProcessors.InputStreamProcessor(inputStream);
     }
 
-    static RequestBodyProcessor fromFile(Path name) {
+    static RequestProcessor fromFile(Path name) {
         return new RequestProcessors.FileProcessor(name);
     }
 

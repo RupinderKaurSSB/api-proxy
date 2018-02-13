@@ -12,22 +12,22 @@ import java.util.Optional;
  */
 
 @FunctionalInterface
-public interface ResponseBodyHandler<T> {
+public interface ResponseHandler<T> {
 
-    ResponseBodyProcessor<T> apply(int statusCode, Headers responseHeaders);
+    ResponseProcessor<T> apply(int statusCode, Headers responseHeaders);
 
-    static ResponseBodyHandler<byte[]> asBytes() {
-        ResponseBodyHandler<byte[]> handler = (statusCode, responseHeaders) -> {
+    static ResponseHandler<byte[]> asBytes() {
+        ResponseHandler<byte[]> handler = (statusCode, responseHeaders) -> {
             return new ResponseProcessors.ByteArrayProcessor<>(bytes -> bytes);
         };
         return handler;
     }
 
-    static ResponseBodyHandler<String> asString() {
+    static ResponseHandler<String> asString() {
         return (statusCode, responseHeaders) -> new ResponseProcessors.ByteArrayProcessor<>(bytes -> new String(bytes, ResponseProcessors.charsetFrom(Optional.ofNullable(responseHeaders))));
     }
 
-    static ResponseBodyHandler<String> asString(Charset charset) {
+    static ResponseHandler<String> asString(Charset charset) {
         return (statusCode, responseHeaders) -> {
             if (charset != null) {
                 return new ResponseProcessors.ByteArrayProcessor<>(bytes -> new String(bytes, charset));

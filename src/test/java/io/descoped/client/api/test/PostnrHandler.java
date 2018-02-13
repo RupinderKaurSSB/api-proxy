@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 
-public class PostnrHandler<T> implements ResponseBodyHandler<Map<String, PostalCode>> {
+public class PostnrHandler<T> implements ResponseHandler<Map<String, PostalCode>> {
 
     private static final Logger log = LoggerFactory.getLogger(PostnrHandler.class);
 
@@ -35,7 +35,7 @@ public class PostnrHandler<T> implements ResponseBodyHandler<Map<String, PostalC
 
     public Response<byte[]> GET(String code) {
         Request request = Request.builder(testServer.baseURL("/transform?code="+code)).GET().build();
-        Response<byte[]> response = Client.create().send​(request, ResponseBodyHandler.asBytes());
+        Response<byte[]> response = Client.create().send​(request, ResponseHandler.asBytes());
         return response;
     }
 
@@ -48,7 +48,7 @@ public class PostnrHandler<T> implements ResponseBodyHandler<Map<String, PostalC
     }
 
     @Override
-    public ResponseBodyProcessor<Map<String, PostalCode>> apply(int statusCode, Headers responseHeaders) {
+    public ResponseProcessor<Map<String, PostalCode>> apply(int statusCode, Headers responseHeaders) {
         if (statusCode != HTTP_OK) {
             return PostnrHandler.asEmptyProcessor();
         }

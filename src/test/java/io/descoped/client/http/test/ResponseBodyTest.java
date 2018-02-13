@@ -1,6 +1,6 @@
 package io.descoped.client.http.test;
 
-import io.descoped.client.http.ResponseBodyHandler;
+import io.descoped.client.http.ResponseHandler;
 import io.descoped.client.http.internal.HeadersImpl;
 import io.descoped.client.http.internal.ResponseProcessors;
 import org.junit.Test;
@@ -61,7 +61,7 @@ public class ResponseBodyTest {
 
         log.trace("s: {}", s);
 
-        ResponseBodyHandler.asString(null);
+        ResponseHandler.asString(null);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ResponseBodyTest {
         byte[] a1 = "Foo".getBytes();
         byte[] a2 = "Bar".getBytes();
 
-        ResponseProcessors.AbstractProcessor<String> processor = (ResponseProcessors.AbstractProcessor<String>) ResponseBodyHandler.asString().apply(HTTP_OK, new HeadersImpl());
+        ResponseProcessors.AbstractProcessor<String> processor = (ResponseProcessors.AbstractProcessor<String>) ResponseHandler.asString().apply(HTTP_OK, new HeadersImpl());
         processor.open();
         processor.write(a1);
         processor.write(a2);

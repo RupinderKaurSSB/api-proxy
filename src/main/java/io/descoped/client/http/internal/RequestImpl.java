@@ -1,7 +1,7 @@
 package io.descoped.client.http.internal;
 
 import io.descoped.client.http.Request;
-import io.descoped.client.http.RequestBodyProcessor;
+import io.descoped.client.http.RequestProcessor;
 
 import java.net.URI;
 import java.time.Duration;
@@ -14,7 +14,7 @@ public class RequestImpl implements Request {
     private final String method;
     private final URI uri;
     private final boolean secure;
-    private final RequestBodyProcessor requestProcessor;
+    private final RequestProcessor requestProcessor;
     private final Duration duration;
     private final HeadersImpl systemHeaders;
     private final HeadersImpl userHeaders;
@@ -52,7 +52,7 @@ public class RequestImpl implements Request {
         return !(requestProcessor instanceof RequestProcessors.EmptyProcessor);
     }
 
-    public RequestBodyProcessor getRequestProcessor() {
+    public RequestProcessor getRequestProcessor() {
         return requestProcessor;
     }
 

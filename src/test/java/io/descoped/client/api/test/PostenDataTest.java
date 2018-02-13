@@ -4,7 +4,7 @@ import io.descoped.client.external.posten.PostalCode;
 import io.descoped.client.http.Client;
 import io.descoped.client.http.Request;
 import io.descoped.client.http.Response;
-import io.descoped.client.http.ResponseBodyHandler;
+import io.descoped.client.http.ResponseHandler;
 import io.descoped.info.JsonBuilder;
 import io.descoped.server.http.TestWebServer;
 import io.undertow.util.Headers;
@@ -60,7 +60,7 @@ public class PostenDataTest {
         server = null;
     }
 
-    private <R> Response<R> fetchPostenDatabase(ResponseBodyHandler<R> handler) {
+    private <R> Response<R> fetchPostenDatabase(ResponseHandler<R> handler) {
         Request request = Request.builder(URI.create("https://www.bring.no/postnummerregister-ansi.txt")).GET().build();
         Response<R> response = Client.create().send​(request, handler);
         return response;
@@ -69,7 +69,7 @@ public class PostenDataTest {
 //    @Test
     public void testPostenAsByteArray() throws Exception {
         // Response data processor
-        ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
+        ResponseHandler<byte[]> handler = ResponseHandler.asBytes();
 
         // Fetch
         Response<byte[]> response = fetchPostenDatabase(handler);
@@ -128,7 +128,7 @@ public class PostenDataTest {
 //    @Test
     public void testGetHystrixCommand() throws Exception {
         final URI uri = URI.create("https://www.bring.no/postnummerregister-ansi.txt2");
-        final ResponseBodyHandler<Map<String, PostalCode>> handler = new PostnrHandler();
+        final ResponseHandler<Map<String, PostalCode>> handler = new PostnrHandler();
 
         GetHystrixCommand<Map<String, PostalCode>> command = new GetHystrixCommand<>(uri, handler);
         command.getBuilder().header("foo", "bar");

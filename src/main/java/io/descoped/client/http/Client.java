@@ -12,6 +12,6 @@ public interface Client<T> {
         return new ClientImpl();
     }
 
-    <T> Response<T> send​(Request req, ResponseBodyHandler<T> responseBodyHandler);
+    <T> Response<T> send​(Request req, ResponseHandler<T> responseHandler);
 
 }

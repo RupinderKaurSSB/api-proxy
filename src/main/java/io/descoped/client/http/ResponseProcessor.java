@@ -2,7 +2,7 @@ package io.descoped.client.http;
 
 import java.util.Optional;
 
-public interface ResponseBodyProcessor<T> {
+public interface ResponseProcessor<T> {
 
     /**
      * Returns the body object

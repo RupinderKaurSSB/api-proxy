@@ -87,7 +87,7 @@ public class APIClientTest {
     public void testHttpConsumerGet() throws Exception {
         Client client = Client.create();
         Request consume = Request.builder(server.baseURL("/get?foo=bar")).GET().build();
-        ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
+        ResponseHandler<byte[]> handler = ResponseHandler.asBytes();
         Exchange<byte[]> exchange = Exchange.createHttpRequestExchange(consume, handler);
         Response<byte[]> response = exchange.response();
         byte[] body = response.body().get();
@@ -97,8 +97,8 @@ public class APIClientTest {
     @Test
     public void testHttpConsumer() throws Exception {
         Client client = Client.create();
-        Request consume = Request.builder(server.baseURL("/dump?foo=bar")).POST(RequestBodyProcessor.fromString("foo=bar")).header("foo", "bar").build();
-        ResponseBodyHandler<byte[]> handler = ResponseBodyHandler.asBytes();
+        Request consume = Request.builder(server.baseURL("/dump?foo=bar")).POST(RequestProcessor.fromString("foo=bar")).header("foo", "bar").build();
+        ResponseHandler<byte[]> handler = ResponseHandler.asBytes();
         Exchange<byte[]> exchange = Exchange.createHttpRequestExchange(consume, handler);
         Response<byte[]> response = exchange.response();
         byte[] body = response.body().get();

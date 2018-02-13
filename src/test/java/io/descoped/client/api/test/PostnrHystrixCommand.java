@@ -9,7 +9,7 @@ import io.descoped.client.external.posten.PostalCode;
 import io.descoped.client.http.Client;
 import io.descoped.client.http.Request;
 import io.descoped.client.http.Response;
-import io.descoped.client.http.ResponseBodyHandler;
+import io.descoped.client.http.ResponseHandler;
 
 import java.net.URI;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class PostnrHystrixCommand extends HystrixCommand<Map<String,PostalCode>>
     @Override
     protected Map<String, PostalCode> run() throws Exception {
         Request request = Request.builder(URI.create("https://www.bring.no/postnummerregister-ansi.txt")).GET().build();
-        ResponseBodyHandler<Map<String, PostalCode>> handler = new PostnrHandler();
+        ResponseHandler<Map<String, PostalCode>> handler = new PostnrHandler();
         Response<Map<String,PostalCode>> response = Client.create().send​(request, handler);
         return response.body().get();
     }

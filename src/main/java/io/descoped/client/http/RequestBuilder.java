@@ -13,11 +13,11 @@ public interface RequestBuilder {
 
     RequestBuilder GET();
 
-    RequestBuilder POST(RequestBodyProcessor body);
+    RequestBuilder POST(RequestProcessor body);
 
-    RequestBuilder DELETE(RequestBodyProcessor body);
+    RequestBuilder DELETE(RequestProcessor body);
 
-    RequestBuilder PUT(RequestBodyProcessor body);
+    RequestBuilder PUT(RequestProcessor body);
 
     Request build();
 

@@ -3,7 +3,7 @@ package io.descoped.client.http.internal;
 import io.descoped.client.http.Client;
 import io.descoped.client.http.Request;
 import io.descoped.client.http.Response;
-import io.descoped.client.http.ResponseBodyHandler;
+import io.descoped.client.http.ResponseHandler;
 import io.descoped.client.http.internal.httpRequest.HttpRequestExchange;
 
 /**
@@ -16,8 +16,8 @@ public class ClientImpl implements Client {
     }
 
     @Override
-    public Response send​(Request req, ResponseBodyHandler responseBodyHandler) {
-        HttpRequestExchange exchange = new HttpRequestExchange(req, responseBodyHandler);
+    public Response send​(Request req, ResponseHandler responseHandler) {
+        HttpRequestExchange exchange = new HttpRequestExchange(req, responseHandler);
         return exchange.response();
     }
 

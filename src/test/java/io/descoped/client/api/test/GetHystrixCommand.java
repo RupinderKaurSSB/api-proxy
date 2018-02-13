@@ -17,10 +17,10 @@ public class GetHystrixCommand<R> extends HystrixCommand<Response<R>> {
 
     private final URI uri;
     private final RequestBuilder builder;
-    private final ResponseBodyHandler<R> handler;
+    private final ResponseHandler<R> handler;
     private Response<R> response = null;
 
-    protected GetHystrixCommand(URI uri, ResponseBodyHandler<R> handler) {
+    protected GetHystrixCommand(URI uri, ResponseHandler<R> handler) {
         super(HystrixSetter.setterCircuitBreaker());
         this.uri = uri;
         this.builder = Request.builder(uri).GET();

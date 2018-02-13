@@ -20,17 +20,17 @@ public class HttpRequestExchange<T> implements Exchange<T> {
     private static Logger log = LoggerFactory.getLogger(HttpRequestExchange.class);
 
     private final Request request;
-    private final ResponseBodyHandler<T> responseBodyHandler;
+    private final ResponseHandler<T> responseHandler;
     private String errorMessage;
     private String errorBody;
 
-    public HttpRequestExchange(Request request, ResponseBodyHandler<T> responseBodyHandler) {
+    public HttpRequestExchange(Request request, ResponseHandler<T> responseHandler) {
         this.request = request;
-        this.responseBodyHandler = responseBodyHandler;
+        this.responseHandler = responseHandler;
     }
 
-    public ResponseBodyHandler<T> getResponseBodyHandler() {
-        return responseBodyHandler;
+    public ResponseHandler<T> getResponseHandler() {
+        return responseHandler;
     }
 
     public String getErrorMessage() {
@@ -82,7 +82,7 @@ public class HttpRequestExchange<T> implements Exchange<T> {
         // obtain payload
 
         Headers responseHeaders = new HeadersImpl(responseHeadersMap);
-        ResponseBodyProcessor<T> result = responseBodyHandler.apply(statusCode, responseHeaders);
+        ResponseProcessor<T> result = responseHandler.apply(statusCode, responseHeaders);
         if (result != null) {
             ResponseProcessors.AbstractProcessor abstractProcessor = (ResponseProcessors.AbstractProcessor) result;
             abstractProcessor.open();

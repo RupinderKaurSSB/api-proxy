@@ -1,6 +1,6 @@
 package io.descoped.client.http.internal;
 
-import io.descoped.client.http.RequestBodyProcessor;
+import io.descoped.client.http.RequestProcessor;
 import sun.net.NetProperties;
 
 import java.io.*;
@@ -35,7 +35,7 @@ public class RequestProcessors {
     static class AbstractProcessor {
     }
 
-    public static class EmptyProcessor extends AbstractProcessor implements RequestBodyProcessor {
+    public static class EmptyProcessor extends AbstractProcessor implements RequestProcessor {
         @Override
         public byte[] body() {
             return new byte[0];
@@ -47,7 +47,7 @@ public class RequestProcessors {
         }
     }
 
-    public static class ByteArrayProcessor extends AbstractProcessor implements RequestBodyProcessor {
+    public static class ByteArrayProcessor extends AbstractProcessor implements RequestProcessor {
         private final int length;
         private final byte[] content;
         private final int offset;
@@ -94,7 +94,7 @@ public class RequestProcessors {
         }
     }
 
-    public static class InputStreamProcessor extends AbstractProcessor implements RequestBodyProcessor {
+    public static class InputStreamProcessor extends AbstractProcessor implements RequestProcessor {
         private final BufferedInputStream inputStream;
         private byte[] result;
 
@@ -129,7 +129,7 @@ public class RequestProcessors {
         }
     }
 
-    public static class FileProcessor extends InputStreamProcessor implements RequestBodyProcessor {
+    public static class FileProcessor extends InputStreamProcessor implements RequestProcessor {
 
         private final File file;
 

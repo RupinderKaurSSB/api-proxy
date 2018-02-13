@@ -1,6 +1,6 @@
 package io.descoped.client.http.test;
 
-import io.descoped.client.http.RequestBodyProcessor;
+import io.descoped.client.http.RequestProcessor;
 import io.descoped.client.util.CommonUtil;
 import io.descoped.client.util.FileUtils;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class RequestBodyTest {
 
     @Test
     public void testFromString() {
-        RequestBodyProcessor processor = RequestBodyProcessor.fromString("FooBar");
+        RequestProcessor processor = RequestProcessor.fromString("FooBar");
         log.trace("{} => {}", processor.body(), "FooBar".getBytes());
         assertEquals(Arrays.toString("FooBar".getBytes()), Arrays.toString(processor.body()));
     }
@@ -30,14 +30,14 @@ public class RequestBodyTest {
 
     @Test
     public void testFromStringCharset() {
-        RequestBodyProcessor processor = RequestBodyProcessor.fromString("FooBar", StandardCharsets.UTF_8);
+        RequestProcessor processor = RequestProcessor.fromString("FooBar", StandardCharsets.UTF_8);
         log.trace("{} => {}", processor.body(), "FooBar".getBytes());
         assertEquals(new String("FooBar".getBytes(), StandardCharsets.UTF_8), new String(processor.body(), StandardCharsets.UTF_8));
     }
 
     @Test
     public void testFromByteArray() {
-        RequestBodyProcessor processor = RequestBodyProcessor.fromByteArray("FooBar".getBytes());
+        RequestProcessor processor = RequestProcessor.fromByteArray("FooBar".getBytes());
         log.trace("{} => {}", processor.body(), "FooBar".getBytes());
         assertEquals(Arrays.toString("FooBar".getBytes()), Arrays.toString(processor.body()));
     }
@@ -45,7 +45,7 @@ public class RequestBodyTest {
     @Test
     public void testFromInputStream() throws Exception {
         ByteArrayInputStream in = new ByteArrayInputStream("FooBar".getBytes());
-        RequestBodyProcessor processor = RequestBodyProcessor.fromInputStream(in);
+        RequestProcessor processor = RequestProcessor.fromInputStream(in);
         log.trace("{} => {}", processor.body(), "FooBar".getBytes());
         assertEquals(Arrays.toString("FooBar".getBytes()), Arrays.toString(processor.body()));
     }
@@ -58,7 +58,7 @@ public class RequestBodyTest {
         FileUtils.writeTo(out, tempFile);
         log.trace("file: {}", tempFile.toString());
 
-        RequestBodyProcessor processor = RequestBodyProcessor.fromFile(tempFile);
+        RequestProcessor processor = RequestProcessor.fromFile(tempFile);
         log.trace("{} => {}", processor.body(), "FooBar".getBytes());
         assertEquals(Arrays.toString("FooBar".getBytes()), Arrays.toString(processor.body()));
     }

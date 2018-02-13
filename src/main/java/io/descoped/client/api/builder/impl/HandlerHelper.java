@@ -29,7 +29,7 @@ public class HandlerHelper {
         return (T) new ErrorProcessor<T>(statusCode, responseHeaders);
     }
 
-//    public static <T> ResponseBodyHandler<T> handler2(Class<T> byteArrayProcessorClass, ResponseBodyHandler<T> func) {
+//    public static <T> ResponseHandler<T> handler2(Class<T> byteArrayProcessorClass, ResponseHandler<T> func) {
 //        return func.apply(st);
 //    }
 }

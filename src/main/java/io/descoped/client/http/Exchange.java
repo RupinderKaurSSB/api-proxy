@@ -6,8 +6,8 @@ public interface Exchange<T> {
 
     Response<T> response();
 
-    static <T> Exchange<T> createHttpRequestExchange(Request consumer, ResponseBodyHandler<T> responseBodyHandler) {
-        return new HttpRequestExchange<>(consumer, responseBodyHandler);
+    static <T> Exchange<T> createHttpRequestExchange(Request consumer, ResponseHandler<T> responseHandler) {
+        return new HttpRequestExchange<>(consumer, responseHandler);
     }
 
 }

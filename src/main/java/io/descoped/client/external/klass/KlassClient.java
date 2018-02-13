@@ -3,7 +3,7 @@ package io.descoped.client.external.klass;
 import io.descoped.client.http.Client;
 import io.descoped.client.http.Request;
 import io.descoped.client.http.Response;
-import io.descoped.client.http.ResponseBodyHandler;
+import io.descoped.client.http.ResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ public class KlassClient {
 
     public String getClassifications() {
         Request req = Request.builder(URI.create(KLASS_URL)).GET().build();
-        ResponseBodyHandler<String> handler = ResponseBodyHandler.asString();
+        ResponseHandler<String> handler = ResponseHandler.asString();
         Response<String> response = Client.create().send​(req, handler);
         return response.body().get();
     }

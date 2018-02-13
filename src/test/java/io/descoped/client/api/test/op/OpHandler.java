@@ -15,10 +15,10 @@ abstract public class OpHandler<T> {
 
     private String id;
     private final URI uri;
-    private final ResponseBodyHandler<T> handler;
+    private final ResponseHandler<T> handler;
     private RequestStorage requestStorage;
 
-    public OpHandler(String id, URI uri, ResponseBodyHandler<T> handler) {
+    public OpHandler(String id, URI uri, ResponseHandler<T> handler) {
         this.id = id;
         this.uri = uri;
         this.handler = handler;
@@ -45,8 +45,8 @@ abstract public class OpHandler<T> {
         return requestStorage.headers();
     }
 
-    public void requestBody(RequestBodyProcessor requestBodyProcessor) {
-        requestStorage.body(new String(requestBodyProcessor.body()));
+    public void requestBody(RequestProcessor requestProcessor) {
+        requestStorage.body(new String(requestProcessor.body()));
     }
 
     public String requestBody() {
