@@ -65,11 +65,14 @@ abstract public class OpHandler<T> {
 
         Request request = requestBuilder.GET().build();
         Response<T> response = Client.create().send​(request, handler);
+        response.body();
 
 //        OutHandler<T> outHandler = new OutHandler<>(this, response);
 //        outHandler.consume();
 
 //        return outHandler;
+
+        run();
         return null;
     }
 
