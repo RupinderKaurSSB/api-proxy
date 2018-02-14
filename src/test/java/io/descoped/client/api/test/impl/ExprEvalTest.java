@@ -29,7 +29,7 @@ public class ExprEvalTest {
         JexlContext jc = new MapContext();
         jc.set("foo", foo);
 
-        // Now evaluate the expression, getting the result
+        // Now evaluateExpression the expression, getting the result
         Object o = e.evaluate(jc);
 
         log.trace("result1: {}", o);
