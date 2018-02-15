@@ -66,7 +66,7 @@ public class PostenDataTest {
         return response;
     }
 
-//    @Test
+    @Test
     public void testPostenAsByteArray() throws Exception {
         // Response data processor
         ResponseHandler<byte[]> handler = ResponseHandler.asBytes();
@@ -79,7 +79,7 @@ public class PostenDataTest {
         log.trace("Rawdata:\n{}", postenDatabaseRawdata);
     }
 
-    @Test
+//    @Test
     public void testPostenWithCustomHandler() throws Exception {
         // Response data processor
         PostnrHandler handler = PostnrHandler.create(server);

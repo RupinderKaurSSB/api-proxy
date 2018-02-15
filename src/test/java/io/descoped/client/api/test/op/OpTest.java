@@ -17,17 +17,6 @@ public class OpTest {
     private static Logger log = LoggerFactory.getLogger(OpTest.class);
 
     //    @Test
-    public void testOpHandler() {
-        OpHandler<String> operation = new OpHandler<String>("op0", URI.create("http://httpbin.org/get"), ResponseHandler.asString()) {
-            @Override
-            public OutHandler<String> run() {
-                log.trace("requestBody(): {}", requestBody());
-                return null;
-            }
-        };
-    }
-
-//    @Test
     public void should_transform_map() {
         Map<String, String> map = new HashMap<>();
         map.put("a", "b");
@@ -55,9 +44,22 @@ public class OpTest {
         log.trace("getExpr: {}", variables.getExpression("${a + b}"));
         log.trace("Eval: {}", variables.evaluateExpression("${foo}"));
         log.trace("Eval: {}", variables.evaluateExpression("${a + b}"));
+        log.trace("Eval: {}", variables.evaluateExpression("${c + d}"));
 
         String expr = "http://www.ssb.no/${foo}?foo=${foo}&val=${a + b}&val2=${c + d}&date=${now}";
         log.trace("Eval: {} --> {}", expr, variables.evaluate(expr));
+    }
+
+
+    @Test
+    public void testOpHandler() {
+        OpHandler<String> operation = new OpHandler<String>("op0", URI.create("http://httpbin.org/get"), ResponseHandler.asString()) {
+            @Override
+            public OutHandler<String> run() {
+                log.trace("requestBody(): {}", requestBody());
+                return null;
+            }
+        };
     }
 
 }

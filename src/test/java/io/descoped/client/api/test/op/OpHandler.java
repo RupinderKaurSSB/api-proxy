@@ -1,6 +1,7 @@
 package io.descoped.client.api.test.op;
 
 import io.descoped.client.api.test.storage.RequestStorage;
+import io.descoped.client.api.test.storage.Variables;
 import io.descoped.client.http.*;
 import io.descoped.client.http.internal.HeadersImpl;
 import io.descoped.client.http.internal.RequestBuilderImpl;
@@ -16,12 +17,14 @@ abstract public class OpHandler<T> {
     private String id;
     private final URI uri;
     private final ResponseHandler<T> handler;
+    private Variables requestVariables;
     private RequestStorage requestStorage;
 
     public OpHandler(String id, URI uri, ResponseHandler<T> handler) {
         this.id = id;
         this.uri = uri;
         this.handler = handler;
+        requestVariables = new Variables();
         requestStorage = new RequestStorage();
     }
 
