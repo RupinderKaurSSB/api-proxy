@@ -2,6 +2,7 @@ package io.descoped.client.http.test;
 
 import io.descoped.client.exception.APIClientException;
 import io.descoped.client.http.*;
+import io.descoped.client.http.internal.ResponseProcessors;
 import io.descoped.server.http.LoopbackRoute;
 import io.descoped.server.http.TestWebServer;
 import org.junit.After;
@@ -32,14 +33,18 @@ public class HttpFailTest {
     public void should_fail() {
         Request request = Request.builder(server.baseURL("/echo")).GET().build();
         try {
-            Response<String> response = Client.create().send​(request, HttpFailTest::apply); // <== fails here
+            Response<byte[]> response = Client.create().send​(request, HttpFailTest::apply); // <== fails here
             log.trace("{}", response.body().get());
         } catch (Exception e) {
             log.error("Error was catched: {}", e.getMessage());
         }
     }
 
-    private static ResponseProcessor<String> apply(int statusCode, Headers headers) {
+    private static ResponseProcessor<byte[]> apply(int statusCode, Headers headers) {
+        return new ResponseProcessors.ByteArrayProcessor<>(HttpFailTest::transform);
+    }
+
+    private static byte[] transform(byte[] bytes) {
         throw new APIClientException("Error");
     }
 

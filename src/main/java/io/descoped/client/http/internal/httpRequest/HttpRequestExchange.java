@@ -98,7 +98,7 @@ public class HttpRequestExchange<T> implements Exchange<T> {
                     throw new APIClientException(e); // todo: this is unsafe as no response will be delivered outside the client
                 }
                 ResponseImpl<T> response = new ResponseImpl<>(requestImpl, statusCode, responseHeaders, result.getBody(), this);
-                response.setError(e);
+                response.setError(e); // todo: this override AbstractProcessor.caught()
                 return response;
             }
             ResponseImpl<T> response = new ResponseImpl<>(requestImpl, statusCode, responseHeaders, result.getBody(), this);

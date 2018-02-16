@@ -21,6 +21,9 @@ public class ResponseProcessors {
 
     public static abstract class AbstractProcessor<T> implements ResponseProcessor<T> {
 
+        private int errorCode;
+        private Exception error;
+
         public abstract void open();
 
         public abstract void write(byte[] bytes);
@@ -38,6 +41,17 @@ public class ResponseProcessors {
             }
         }
 
+        public int getStatusCode() {
+            return errorCode;
+        }
+
+        public void setStatusCode(int statusCode) {
+            this.errorCode = statusCode;
+        }
+
+        public void caught(Exception e) {
+            this.error = e;
+        }
     }
 
     public static int remaining(List<ByteBuffer> bufs) {

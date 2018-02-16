@@ -16,7 +16,7 @@ public class ResponseImpl<T> implements Response<T> {
     private final Headers headers;
     private final URI uri;
     private final Optional<T> body;
-    private Exception error;
+    private Exception error = null;
 
     public ResponseImpl(Request initialRequest,
                         int statusCode,

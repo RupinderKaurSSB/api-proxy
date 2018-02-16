@@ -3,8 +3,6 @@ package io.descoped.client.api.test;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
 import io.descoped.client.http.*;
-import io.descoped.client.http.internal.ResponseImpl;
-import io.descoped.client.http.internal.httpRequest.HttpRequestExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +19,7 @@ public class GetHystrixCommand<R> extends HystrixCommand<Response<R>> {
     private Response<R> response = null;
 
     protected GetHystrixCommand(URI uri, ResponseHandler<R> handler) {
-        super(HystrixSetter.setterCircuitBreaker());
+        super(HystrixSetter.setterFallback());
         this.uri = uri;
         this.builder = Request.builder(uri).GET();
         this.handler = handler;
@@ -42,8 +40,8 @@ public class GetHystrixCommand<R> extends HystrixCommand<Response<R>> {
 
     @Override
     protected Response<R> getFallback() {
-        HttpRequestExchange exch = ((ResponseImpl) response).getExchange();
-        log.error("Hystrix Fallback Error: [{}] {}", response.statusCode(), exch.getErrorMessage());
+//        HttpRequestExchange exch = ((ResponseImpl) response).getExchange();
+        log.error("Hystrix Fallback Error: [{}] {}", response.statusCode(), (response.getError() != null ? response.getError().getMessage() : ""));
         return response;
     }
 }

@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static java.net.HttpURLConnection.HTTP_NOT_FOUND;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 public class PostnrHandler<T> implements ResponseHandler<Map<String, PostalCode>> {
@@ -49,7 +50,11 @@ public class PostnrHandler<T> implements ResponseHandler<Map<String, PostalCode>
 
     @Override
     public ResponseProcessor<Map<String, PostalCode>> apply(int statusCode, Headers responseHeaders) {
-        if (statusCode != HTTP_OK) {
+        if (statusCode == HTTP_NOT_FOUND) {
+            ResponseProcessors.ByteArrayProcessor<Map<String, PostalCode>> processor = PostnrHandler.asEmptyProcessor();
+            processor.caught(new APIClientException());
+
+        } else if (statusCode != HTTP_OK) {
             return PostnrHandler.asEmptyProcessor();
         }
         return PostnrHandler.asProcessor(PostnrHandler::apply);
