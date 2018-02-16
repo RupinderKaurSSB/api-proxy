@@ -43,7 +43,7 @@ public class HttpFailTest {
     }
 
     @Test
-    public void should_fail_resource_not_found() {
+    public void should_succeed_on_resource_not_found() {
         Request request = Request.builder(server.baseURL("/echo2")).GET().build();
         Response<byte[]> response = Client.create().send​(request, HttpFailTest::apply); // <== does NOT fail here! statusCode = 404
         log.trace("Response: {}", response.body().get());
