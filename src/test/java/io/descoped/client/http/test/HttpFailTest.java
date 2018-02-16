@@ -35,7 +35,7 @@ public class HttpFailTest {
     public void should_fail_due_to_exception() {
         Request request = Request.builder(server.baseURL("/echo")).GET().build();
         try {
-            Response<byte[]> response = Client.create().send​(request, HttpFailTest::apply); // <== fails here
+            Response<byte[]> response = Client.create().send​(request, HttpFailTest::handle); // <== fails here
             log.trace("Response: {}", response.body().get());
         } catch (Exception e) {
             log.error("Error was catched: {}", e.getMessage());
@@ -45,22 +45,22 @@ public class HttpFailTest {
     @Test
     public void should_succeed_on_resource_not_found() {
         Request request = Request.builder(server.baseURL("/echo2")).GET().build();
-        Response<byte[]> response = Client.create().send​(request, HttpFailTest::apply); // <== does NOT fail here! statusCode = 404
+        Response<byte[]> response = Client.create().send​(request, HttpFailTest::handle); // <== does NOT fail here! statusCode = 404
         log.trace("Response: {}", response.body().get());
     }
 
-    private static ResponseProcessor<byte[]> apply(int statusCode, Headers headers) {
+    private static ResponseProcessor<byte[]> handle(int statusCode, Headers headers) {
         if (statusCode != HTTP_OK) {
             return new ResponseProcessors.ByteArrayProcessor<>(HttpFailTest::empty);
         }
-        return new ResponseProcessors.ByteArrayProcessor<>(HttpFailTest::transform);
+        return new ResponseProcessors.ByteArrayProcessor<>(HttpFailTest::process);
     }
 
     private static byte[] empty(byte[] bytes) {
         return new byte[0];
     }
 
-    private static byte[] transform(byte[] bytes) {
+    private static byte[] process(byte[] bytes) {
         throw new APIClientException("Error");
     }
 
