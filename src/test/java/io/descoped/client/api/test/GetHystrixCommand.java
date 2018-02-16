@@ -35,15 +35,15 @@ public class GetHystrixCommand<R> extends HystrixCommand<Response<R>> {
     @Override
     protected Response<R> run() throws Exception {
         Request request = builder.build();
-            response = Client.create().send​(request, handler);
-            if (response.isError()) throw response.getError();
-            return response;
+        response = Client.create().send​(request, handler);
+        if (response.isError()) throw response.getError();
+        return response;
     }
 
     @Override
     protected Response<R> getFallback() {
         HttpRequestExchange exch = ((ResponseImpl) response).getExchange();
-        log.error("Hystrix Fallback Error: [{}] {}", response.statusCode(), exch.getErrorMessage() );
+        log.error("Hystrix Fallback Error: [{}] {}", response.statusCode(), exch.getErrorMessage());
         return response;
     }
 }
