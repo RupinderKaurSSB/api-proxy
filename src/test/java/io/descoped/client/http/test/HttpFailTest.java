@@ -17,6 +17,8 @@ public class HttpFailTest {
 
     private static final Logger log = LoggerFactory.getLogger(HttpFailTest.class);
 
+    private static final ResponseProcessor<byte[]> EMPTY_RESPONSE_PROCESSOR = new ResponseProcessors.ByteArrayProcessor<>(bytes -> new byte[0]);
+
     private TestWebServer server;
 
     @Before
@@ -51,13 +53,9 @@ public class HttpFailTest {
 
     private static ResponseProcessor<byte[]> handle(int statusCode, Headers headers) {
         if (statusCode != HTTP_OK) {
-            return new ResponseProcessors.ByteArrayProcessor<>(HttpFailTest::empty);
+            return HttpFailTest.EMPTY_RESPONSE_PROCESSOR;
         }
         return new ResponseProcessors.ByteArrayProcessor<>(HttpFailTest::process);
-    }
-
-    private static byte[] empty(byte[] bytes) {
-        return new byte[0];
     }
 
     private static byte[] process(byte[] bytes) {
