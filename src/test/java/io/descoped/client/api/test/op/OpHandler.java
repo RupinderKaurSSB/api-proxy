@@ -63,6 +63,9 @@ abstract public class OpHandler<T> {
 
         HeadersImpl internalRequestHeaders = (HeadersImpl) ((RequestBuilderImpl) requestBuilder).getHeaders();
         for(Map.Entry<String,String> entry : requestStorage.headers().entrySet()) {
+
+            boolean exists = requestVariables.containsKey(entry.getKey());
+
             internalRequestHeaders.addHeader(entry.getKey(), entry.getValue());
         }
 

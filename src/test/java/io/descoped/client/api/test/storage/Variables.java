@@ -74,4 +74,7 @@ public class Variables {
     }
 
 
+    public boolean containsKey(String key) {
+        return variables.containsKey(key);
+    }
 }

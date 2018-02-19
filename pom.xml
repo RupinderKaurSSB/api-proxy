@@ -30,6 +30,7 @@
         <mockito.version>2.12.0</mockito.version>
         <assertj.version>3.8.0</assertj.version>
         <undertow.version>1.4.21.Final</undertow.version>
+        <jcache.version>1.1.0</jcache.version>
     </properties>
 
     <developers>
@@ -153,6 +154,18 @@
                     <artifactId>asm</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>${jcache.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsr107.ri</groupId>
+            <artifactId>cache-ri-impl</artifactId>
+            <version>${jcache.version}</version>
         </dependency>
 
         <dependency>
