@@ -61,7 +61,6 @@ public class RequestImpl implements Request {
     }
 
     public Map<String,List<String>> headers() {
-        userHeaders.addHeader("ove", "ranheim");
         return userHeaders.map();
     }
 
