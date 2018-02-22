@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 public class StorageTest {
 
     Variables variables = new Variables();
-    RequestStorage requestStorage = new RequestStorage();
+    RequestStorage requestStorage = new RequestStorage(variables);
     ResponseStorage<String> responseStorage = new ResponseStorage<>();
 
     @Before
@@ -19,8 +19,9 @@ public class StorageTest {
 
     @Test
     public void testRequestStorage() {
-        requestStorage.param("foo", "bar");
+        requestStorage.param("foo", "${bar}");
         assertEquals(requestStorage.params().get("foo"), "bar");
+        assertEquals(requestStorage.params().eval("${foo}"), "bar");  // should keys be evaled or only value?
         requestStorage.header("foo", "bar");
         assertEquals(requestStorage.headers().get("foo"), "bar");
         requestStorage.body("foobar");

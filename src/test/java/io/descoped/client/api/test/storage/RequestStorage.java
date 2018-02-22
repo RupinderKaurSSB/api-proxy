@@ -1,24 +1,26 @@
 package io.descoped.client.api.test.storage;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class RequestStorage {
 
-    private Map<String,String> params;
-    private Map<String,String> headers;
+    private final Variables variables;
+    private final ELMap<String,String> params;
+    private final ELMap<String,String> headers;
     private String body;
 
-    public RequestStorage() {
-        params = new LinkedHashMap<>();
-        headers = new LinkedHashMap<>();
+    public RequestStorage(Variables variables) {
+        Objects.requireNonNull(variables);
+        this.variables = variables;
+        params = new ELMap<>(this.variables);
+        headers = new ELMap<>(this.variables);
     }
 
     public void param(String name, String value) {
         params.put(name, value);
     }
 
-    public Map<String, String> params() {
+    public ELMap<String, String> params() {
         return params;
     }
 
@@ -26,7 +28,7 @@ public class RequestStorage {
         headers.put(name, value);
     }
 
-    public Map<String, String> headers() {
+    public ELMap<String, String> headers() {
         return headers;
     }
 

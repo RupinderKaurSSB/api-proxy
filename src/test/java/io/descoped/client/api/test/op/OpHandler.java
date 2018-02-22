@@ -25,7 +25,7 @@ abstract public class OpHandler<T> {
         this.uri = uri;
         this.handler = handler;
         requestVariables = new Variables();
-        requestStorage = new RequestStorage();
+        requestStorage = new RequestStorage(requestVariables);
     }
 
     public String getId() {

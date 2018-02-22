@@ -27,7 +27,7 @@ public class OpTest {
         });
     }
 
-    @Test
+//    @Test
     public void should_bind_variables() {
         Variables variables = new Variables();
         variables.add("foo", "bar");
@@ -38,7 +38,6 @@ public class OpTest {
         variables.add("c", "1");
         variables.add("d", "2");
         variables.add("now", System.currentTimeMillis());
-
 
         log.trace("isExpr: {}", variables.isExpression("${foo}"));
         log.trace("getExpr: {}", variables.getExpression("${a + b}"));
@@ -51,7 +50,7 @@ public class OpTest {
     }
 
 
-    @Test
+//    @Test
     public void testOpHandler() {
         OpHandler<String> operation = new OpHandler<String>("op0", URI.create("http://httpbin.org/get"), ResponseHandler.asString()) {
             @Override
@@ -62,4 +61,19 @@ public class OpTest {
         };
     }
 
+    @Test
+    public void testOp2() throws Exception {
+        Variables variables = new Variables();
+        variables.add("foo", "bar");
+        variables.add("lang", "nb");
+        Op.Builder builder = Op.newBuilder(UriTemplate.create("http://httpbin.org/get?foo=${foo}"), variables);
+        builder.addHeaderValue("Accept-Language", "${lang}");
+        Op op = builder.GET().build();
+        log.trace("op: {}", op.uri());
+        op.handler(ResponseHandler.asBytes());
+        op.handler(ResponseHandler.asString());
+        Out out = op.execute();
+    }
 }
+
+

@@ -58,3 +58,20 @@ Plan:
 Experimental:
 --
 
+```java
+Operation.Builder builder = Operation.builder(URI.create("http://httpbin.org/get?foo=${foo}"));
+builder.addVariable("foo", "bar");
+builder.addVariable("lang", "nb");
+builder.addHeaderValue("Accept-Language", "${lang}")
+
+Operation operation1 = builder.GET().build(); // all variables are evaluated on build
+assertEquals(operation1.uri(), "http://httpbin.org/get?foo=bar");
+assertEquals(operation1.getHeaderValue("Accept-Language", "nb"); 
+
+Outcome outcome = operation1.execute();
+// hva skal skje her? skal vi ha flere processorer som kan kjøres
+// invoke multiple responseProcessors
+outcome.cache().put("raw", processesJson.getBytes()); // available to all processors
+outcome.cache().put("geo", processesGeo.getBytes()); // available to all processors
+
+```
